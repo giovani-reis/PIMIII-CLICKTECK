@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37012.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PIMIII-CLICKTECK", "PIMIII-CLICKTECK.csproj", "{ACE4E2DF-3B98-4CB2-8DB8-FB9AB19A0958}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACE4E2DF-3B98-4CB2-8DB8-FB9AB19A0958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE4E2DF-3B98-4CB2-8DB8-FB9AB19A0958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE4E2DF-3B98-4CB2-8DB8-FB9AB19A0958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE4E2DF-3B98-4CB2-8DB8-FB9AB19A0958}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97CD1482-97CA-413C-80EB-7E95E466A577}
+	EndGlobalSection
+EndGlobal

@@ -1,53 +1,138 @@
-﻿@model IEnumerable<PIM_TechTrust.Models.Usuario>
-
+﻿@model PIM_TechTrust.Models.Usuario
 @{
-    ViewData["Title"] = "Index";
+    Layout = null;
 }
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClickTech | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
 
-<h1>Index</h1>
+    @* Correção das referências de CSS e Ícones usando ~/ *@
+    <link rel="stylesheet" href="~/estilos/style.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/img/favicon-16x16.png" />
+    <link rel="manifest" href="~/img/site.webmanifest" />
+</head>
+<body class="auth-body">
+    <div class="auth-layout">
+        <div class="auth-banner">
+            <div class="auth-banner-content">
+                <a asp-controller="Home" asp-action="Index" class="logo" style="text-decoration: none">
+                    <div class="logo-icon">CT</div>
+                    <span class="logo-text text-white">Click<span>Tech</span></span>
+                </a>
+                <h2>A sua plataforma de assistência técnica de confiança.</h2>
+                <p>Conectamos você aos melhores especialistas da região com total segurança e garantia de serviço.</p>
+                <div class="banner-graphic"></div>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Senha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Senha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <div class="auth-form-section">
+            <a asp-controller="Home" asp-action="Index" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Voltar para o site
+            </a>
+
+            @* BOX DE LOGIN *@
+            <div class="auth-box" id="login-box">
+                <div class="auth-header">
+                    <h2>Bem-vindo de volta</h2>
+                    <p>Insira seus dados para acessar sua conta.</p>
+                    @if (ViewBag.Erro != null)
+                    {
+                        <span style="color: red; font-size: 14px;">@ViewBag.Erro</span>
+                    }
+                </div>
+
+                @* Enviando para a Action Entrar do LoginController *@
+                <form class="auth-form" asp-controller="Login" asp-action="Entrar" method="post">
+                    <div class="form-group">
+                        <label asp-for="Email">E-mail</label>
+                        <input asp-for="Email" type="email" placeholder="seu@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Senha">Senha</label>
+                        <div class="password-wrapper">
+                            <input asp-for="Senha" type="password" id="password" placeholder="••••••••" required />
+                            <button type="button" class="toggle-password" data-target="password">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="Lembrar" /> Lembrar de mim
+                        </label>
+                        <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-btn">Entrar</button>
+                </form>
+
+                <p class="auth-switch">
+                    Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a>
+                </p>
+            </div>
+
+            @* BOX DE CADASTRO (Mantido para o seu JS alternar) *@
+            <div class="auth-box hidden" id="register-box">
+                <div class="auth-header">
+                    <h2>Criar Nova Conta</h2>
+                    <p>Preencha os dados abaixo para se cadastrar.</p>
+                </div>
+
+                @* Aqui você pode criar uma action 'Cadastrar' depois *@
+                <form class="auth-form" asp-controller="Login" asp-action="Cadastrar" method="post">
+                    <div class="form-group">
+                        <label for="reg-name">Nome Completo</label>
+                        <input type="text" id="reg-name" name="Nome" placeholder="João da Silva" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" name="Email" placeholder="seu@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" name="Senha" placeholder="Crie uma senha forte" required />
+                            <button type="button" class="toggle-password" data-target="reg-password">
+                                @* SVG omitido para brevidade *@
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-btn">Cadastrar</button>
+                </form>
+
+                <p class="auth-switch">
+                    Já possui uma conta? <a href="#" id="show-login">Fazer Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    @* Correção das referências de Scripts usando ~/ *@
+    <script src="~/scripts/main.js"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+</body>
+</html>

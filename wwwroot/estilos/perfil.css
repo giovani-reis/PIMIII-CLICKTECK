@@ -1,0 +1,365 @@
+/* =========================================
+   TELA DE PERFIL DO USUÁRIO (perfil.css)
+   ========================================= */
+
+.profile-page {
+    padding-top: 20px;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* === LÓGICA DE ABAS (TABS) === */
+.tab-pane {
+    display: none; /* Esconde todas as abas por padrão */
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block; /* Mostra apenas a aba ativa */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === MENU LATERAL (SIDEBAR) === */
+.profile-sidebar {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+.sidebar-user-info {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+    background: #f8fafc;
+}
+
+.sidebar-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--white);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 10px;
+}
+
+.sidebar-user-info h3 {
+    font-size: 18px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.sidebar-user-info p {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 15px 0;
+}
+
+.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 25px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.sidebar-nav li a:hover {
+    background: #f0f9ff;
+    color: var(--primary-blue);
+}
+
+.sidebar-nav li a.active {
+    background: #f0f9ff;
+    color: var(--primary-blue);
+    border-right: 3px solid var(--primary-blue);
+    font-weight: 600;
+}
+
+/* === ÁREA DE CONTEÚDO (FORMULÁRIO) === */
+.profile-content {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    padding: 30px 40px;
+    min-height: 500px; /* Garante que a caixa não encolha demais em abas vazias */
+}
+
+.content-header {
+    margin-bottom: 30px;
+}
+
+.content-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
+.content-header p {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* === UPLOAD DE FOTO === */
+.avatar-upload-section {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.current-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-light);
+}
+
+.avatar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.help-text {
+    font-size: 12px;
+    color: var(--text-light);
+    width: 100%;
+    margin-top: 5px;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: var(--border-light);
+    margin: 30px 0;
+}
+
+/* === FORMULÁRIO E INPUTS === */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.form-input {
+    padding: 12px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-main);
+    outline: none;
+    transition: 0.2s;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--white);
+}
+
+.form-input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.disabled-input {
+    background-color: var(--bg-gray) !important;
+    color: var(--text-light);
+    cursor: not-allowed;
+}
+
+/* === BOTÕES (Garante a estilização na tela de perfil) === */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue, #0ea5e9);
+    color: var(--white, #ffffff);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-blue, #0284c7);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-main, #1e293b);
+    border: 1px solid #cbd5e1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-blue, #0ea5e9);
+    color: var(--primary-blue, #0ea5e9);
+}
+
+.btn-text-danger {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.btn-text-danger:hover {
+    background-color: #fee2e2;
+}
+
+/* =========================================
+   RESPONSIVIDADE DA TELA DE PERFIL
+   ========================================= */
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-content {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .avatar-upload-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .form-group {
+        max-width: 100% !important;
+    }
+}
+/* Estilos específicos para a lista de histórico no perfil */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-item {
+    background: #f8fafc;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 15px;
+    transition: 0.2s;
+}
+
+.history-item.done {
+    background: var(--white);
+    border-style: dashed;
+}
+
+.history-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+    gap: 15px;
+}
+
+.history-tech {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mini-avatar-history {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.history-tech div {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-tech strong {
+    font-size: 14px;
+    color: var(--text-main);
+}
+
+.history-tech span {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.history-date {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+.history-date span {
+    font-size: 11px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Reutilizando as cores dos badges que já temos */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+}   

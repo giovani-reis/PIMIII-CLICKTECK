@@ -1,8 +1,368 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    Layout = null;
 }
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClickTech | Assistência Técnica de Confiança</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+          rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="PIMIII_CLICKTECK/img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+    <link rel="manifest" href="img/site.webmanifest" />
+    <link rel="stylesheet" href="estilos/style.css" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <div class="logo-icon">CT</div>
+                <span class="logo-text">Click<span>Tech</span></span>
+            </div>
+
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#quem-somos">Quem Somos</a></li>
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#seja-tecnico">Seja um Técnico</a></li>
+                <li><a href="#avaliacoes">Avaliações</a></li>
+                <li class="mobile-only">
+                    <a href="login.html"
+                       class="btn-primary"
+                       style="text-decoration: none">Entrar</a>
+                </li>
+            </ul>
+
+            <div class="nav-actions desktop-only">
+                <a href="login.html"
+                   class="btn-primary"
+                   style="
+              text-decoration: none;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+            ">Entrar</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <span class="badge">Sua plataforma de confiança</span>
+                <h1>
+                    Cansado de procurar técnicos e
+                    <span class="highlight">não ter garantia?</span>
+                </h1>
+                <p>
+                    O TechTrust une você aos profissionais mais qualificados do mercado.
+                    Atendimento rápido, seguro e com transparência total.
+                </p>
+            </div>
+
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <img src="img/inicio.svg" alt="Técnico ClickTech" />
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="quem-somos" class="bg-dark text-white">
+        <div class="container">
+            <h2 class="section-title text-center text-white mb-5">
+                Porquê Escolher o ClickTech?
+            </h2>
+            <br />
+
+            <div class="quem-somos-grid">
+                <div class="qs-card">
+                    <div class="qs-icon">🔧</div>
+                    <h3>A solução definitiva</h3>
+                    <p>
+                        Conectamos clientes a técnicos verificados de forma rápida. Fim da
+                        dor de cabeça na hora de consertar seus dispositivos, promovendo
+                        economia e confiança.
+                    </p>
+                </div>
+                <div class="qs-card qs-highlight">
+                    <div class="qs-icon">🛡️</div>
+                    <h3>Segurança</h3>
+                    <p>
+                        Atuamos em total conformidade com a LGPD. Seus dados e seu
+                        dinheiro ficam protegidos em nossa plataforma até a conclusão do
+                        serviço.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="como-funciona" class="section-padding">
+        <div class="container">
+            <h2 class="section-title text-center">
+                Simples, <span class="highlight-color">seguro e conectado</span>
+            </h2>
+
+            <div class="steps-wrapper">
+                <div class="step-box">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>Encontre um Técnico</h4>
+                        <p>
+                            Busque por especialistas em reparo locais com base em sua
+                            localização e tipo de dispositivo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>Receba um Orçamento</h4>
+                        <p>
+                            Discuta seu problema e receba um orçamento transparente com
+                            prazo estipulado.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>Pagamento Seguro</h4>
+                        <p>
+                            Seu dinheiro fica em garantia até você confirmar que o reparo
+                            foi concluído.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="seja-tecnico"
+             class="section-padding"
+             style="background-color: #f8f9fa">
+        <div class="container">
+            <h2 class="section-title text-center">
+                Transforme seu talento em <span class="highlight">lucro</span>
+            </h2>
+            <p class="text-center mb-5">
+                Faça parte da maior rede de técnicos especializados.
+            </p>
+
+            <div class="quem-somos-grid">
+                <div class="qs-card">
+                    <div class="qs-icon">📈</div>
+                    <h3>Mais Clientes</h3>
+                    <p>
+                        Receba pedidos de serviço direto no seu painel todos os dias e
+                        aumente seu faturamento.
+                    </p>
+                </div>
+                <div class="qs-card qs-highlight">
+                    <div class="qs-icon">🕒</div>
+                    <h3>Autonomia Total</h3>
+                    <p>
+                        Você decide quando trabalhar e quais orçamentos enviar. Seja seu
+                        próprio chefe.
+                    </p>
+                </div>
+                <div class="qs-card">
+                    <div class="qs-icon">💳</div>
+                    <h3>Recebimento Garantido</h3>
+                    <p>
+                        Chega de calotes. O pagamento do cliente fica seguro conosco até
+                        você finalizar o serviço.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="avaliacoes"
+             class="bg-dark text-white section-padding overflow-hidden">
+        <div class="container">
+            <h2 class="section-title text-center text-white mb-5">
+                O que falam de nós?
+            </h2>
+
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <p>
+                            "Consegui consertar meu notebook por um preço excelente. O
+                            técnico foi super atencioso!"
+                        </p>
+                        <span class="review-author">— Ana Pereira</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <p>
+                            "Consertar meus dispositivos antigos no ClickTech foi rápido e
+                            seguro."
+                        </p>
+                        <span class="review-author">— Nicolly Lima</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★☆</div>
+                        <p>
+                            "Adorei a ideia da plataforma. O conserto do meu celular ficou
+                            perfeito e com garantia."
+                        </p>
+                        <span class="review-author">— George Silva</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <p>
+                            "Consegui consertar meu notebook por um preço excelente. O
+                            técnico foi super atencioso!"
+                        </p>
+                        <span class="review-author">— Camila Rocha</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★★</div>
+                        <p>
+                            "Consertar meus dispositivos antigos no ClickTech foi rápido e
+                            seguro."
+                        </p>
+                        <span class="review-author">— Fernando Pereira</span>
+                    </div>
+                    <div class="review-card">
+                        <div class="stars">★★★★☆</div>
+                        <p>
+                            "Adorei a ideia da plataforma. O conserto do meu celular ficou
+                            perfeito e com garantia."
+                        </p>
+                        <span class="review-author">— Maria Silva</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-icon">T</div>
+                    <span class="logo-text text-white">Click<span>Tech</span></span>
+                </div>
+                <p>
+                    Conectando você aos melhores técnicos da região com segurança e
+                    transparência.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#quem-somos">Quem Somos</a></li>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#seja-tecnico">Seja um Técnico</a></li>
+                    <li><a href="#avaliacoes">Avaliações</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-legal">
+                <h4>Legal & Suporte</h4>
+                <ul>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a href="#">Política de Privacidade (LGPD)</a></li>
+                    <li><a href="#">Central de Ajuda</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-social">
+                <h4>Redes Sociais</h4>
+                <div class="social-icons">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>© 2026 ClickTech. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+
+    <script src="d:\documentos\estudo\pimiii-clickteck\scripts\home.js"></script>
+</body>
+</html>

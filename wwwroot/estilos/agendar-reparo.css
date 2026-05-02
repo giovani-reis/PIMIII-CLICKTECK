@@ -1,0 +1,375 @@
+:root {
+  --primary-blue: #0ea5e9;
+  --dark-blue: #0284c7;
+  --text-main: #1e293b;
+  --text-light: #64748b;
+  --white: #ffffff;
+  --bg-gray: #f1f5f9;
+  --border-light: #e2e8f0;
+  --success-green: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--bg-gray) 0%,
+    var(--border-light) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--text-main);
+}
+
+/* Container Principal simulando um celular na tela */
+.chat-app {
+  width: 100%;
+  max-width: 400px;
+  height: 85vh;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.chat-header {
+  background: var(--primary-blue);
+  color: var(--white);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.btn-back {
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: 0.2s;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tech-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--white);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.tech-info h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.tech-info p {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--success-green);
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 5px var(--success-green);
+}
+
+
+.chat-messages {
+  flex: 1;
+  padding: 20px 15px;
+  overflow-y: auto;
+  background-color: var(--bg-gray);
+  background-image: radial-gradient(var(--border-light) 1px, transparent 1px);
+  background-size: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  position: relative;
+}
+
+.message-tech {
+  align-self: flex-start;
+}
+
+.message-user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+
+.message-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.message-tech .message-bubble {
+  background-color: var(--white);
+  color: var(--text-main);
+  border-bottom-left-radius: 4px;
+}
+
+/* O "rabinho" do balão do técnico */
+.message-tech .message-bubble::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+  width: 12px;
+  height: 16px;
+  background-color: var(--white);
+  clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+}
+
+.message-user .message-bubble {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-bottom-right-radius: 4px;
+}
+
+/* O "rabinho" do balão do usuário */
+.message-user .message-bubble::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  bottom: 0;
+  width: 12px;
+  height: 16px;
+  background-color: var(--primary-blue);
+  clip-path: polygon(0 0, 0% 100%, 100% 100%);
+}
+
+.message-time {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+.message-user .message-time {
+  text-align: right;
+}
+
+/* Estilo elegante para as fotos anexadas */
+.message-image {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Quando o balão tem só imagem, removemos o padding para a imagem preencher tudo */
+.bubble-image-only {
+  padding: 4px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.bubble-image-only::after {
+  display: none;
+} /* Remove o rabinho se for só imagem */
+
+/* Barra de Digitação Flutuante */
+.input-area-wrapper {
+  background: var(--bg-gray);
+  padding: 10px 15px 15px 15px;
+}
+
+.chat-input-container {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 15px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.btn-attach {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.btn-attach:hover {
+  color: var(--primary-blue);
+}
+
+.chat-input {
+  flex: 1;
+  border: none;
+  font-size: 15px;
+  outline: none;
+  background: transparent;
+  padding: 10px 0;
+  color: var(--text-main);
+}
+
+.chat-input::placeholder {
+  color: var(--text-light);
+}
+
+.btn-send {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-send:hover {
+  transform: scale(1.05);
+  background-color: var(--dark-blue);
+}
+
+#file-input {
+  display: none;
+}
+.dash-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+}
+
+.dash-nav-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.logo-icon {
+  background: var(--primary-blue);
+  color: var(--white);
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.logo-text span {
+  color: var(--primary-blue);
+}
+@media (max-width: 768px) {
+  .dash-nav-container {
+    gap: 10px;
+  }
+  
+  .logo-text {
+    display: none; /* Esconde texto da logo para ganhar espaço */
+  }
+  
+  .message {
+    max-width: 90%; /* Balões de mensagem aproveitam mais o espaço da tela */
+  }
+}
+
+/* Telas pequenas (Smartphones) */
+@media (max-width: 600px) {
+  body {
+    align-items: flex-start; /* Joga o chat pro topo ao invés de centralizar */
+  }
+  
+  .chat-app {
+    max-width: 100%;
+    height: calc(100vh - 70px); /* Pega toda a altura, descontando a navbar */
+    margin-top: 70px; /* Desce o chat para não ficar escondido pela navbar fixa */
+    border-radius: 0; /* Tira bordas arredondadas para parecer tela de app */
+    box-shadow: none;
+  }
+  
+  .input-area-wrapper {
+    padding: 10px; /* Reduz um pouco o respiro inferior */
+  }
+  
+  .chat-input-container {
+    padding: 5px 5px 5px 12px;
+  }
+  
+  .btn-send {
+    width: 36px;
+    height: 36px; /* Botão de enviar levemente menor no celular */
+  }
+}

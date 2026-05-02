@@ -1,0 +1,76 @@
+.btn-fav-active {
+  color: #ef4444 !important;
+  background: #fef2f2 !important;
+  border-color: #fee2e2 !important;
+}
+@media (max-width: 768px) {
+  .dash-navbar {
+    height: 60px;
+  }
+  .logo-text {
+    display: none;
+  } 
+  .user-name {
+    display: none;
+  }
+  .header-actions {
+    gap: 15px;
+  }
+
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .filters {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .appointment-main {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .status-badge {
+    width: auto;
+    padding: 10px 20px;
+  }
+}
+@media (max-width: 768px) {
+  .dash-navbar {
+    height: 60px;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .user-menu {
+    display: flex !important;
+    align-items: center;
+  }
+
+  .user-profile span {
+    display: block !important;
+    color: var(--primary-blue) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    white-space: nowrap;
+  }
+
+  .dash-header h1 {
+    font-size: 24px;
+  }
+  .dash-main {
+    padding: 30px 20px;
+  }
+}

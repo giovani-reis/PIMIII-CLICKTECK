@@ -8,6 +8,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\estilos\agendamentos.css" />
+    <None Include="wwwroot\estilos\agendar-reparo.css" />
+    <None Include="wwwroot\estilos\ajuda.css" />
+    <None Include="wwwroot\estilos\dashboard.css" />
+    <None Include="wwwroot\estilos\favoritos.css" />
+    <None Include="wwwroot\estilos\perfil.css" />
+    <None Include="wwwroot\estilos\style.css" />
+    <None Include="wwwroot\img\about.txt" />
+    <None Include="wwwroot\img\android-chrome-192x192.png" />
+    <None Include="wwwroot\img\android-chrome-512x512.png" />
+    <None Include="wwwroot\img\apple-touch-icon.png" />
+    <None Include="wwwroot\img\download %285%29.jpg" />
+    <None Include="wwwroot\img\download %286%29.jpg" />
+    <None Include="wwwroot\img\download %287%29.jpg" />
+    <None Include="wwwroot\img\download %288%29.jpg" />
+    <None Include="wwwroot\img\favicon-16x16.png" />
+    <None Include="wwwroot\img\favicon-32x32.png" />
+    <None Include="wwwroot\img\favicon.ico" />
+    <None Include="wwwroot\img\inicio.svg" />
+    <None Include="wwwroot\img\Older Men.jpg" />
+    <None Include="wwwroot\img\site.webmanifest" />
+    <None Include="wwwroot\img\Woman.jpg" />
+    <None Include="wwwroot\img\프사.jpg" />
+    <None Include="wwwroot\scripts\agendamentos.js" />
+    <None Include="wwwroot\scripts\agendar-reparo.js" />
+    <None Include="wwwroot\scripts\ajuda.js" />
+    <None Include="wwwroot\scripts\dashboard.js" />
+    <None Include="wwwroot\scripts\favoritos.js" />
+    <None Include="wwwroot\scripts\home.js" />
+    <None Include="wwwroot\scripts\main.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.26">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

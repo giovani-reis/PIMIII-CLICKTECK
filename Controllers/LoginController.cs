@@ -10,11 +10,11 @@ using PIM_TechTrust.Models;
 
 namespace PIMIII_CLICKTECK.Controllers
 {
-    public class UsuariosController : Controller
+    public class LoginController : Controller
     {
         private readonly Context _context;
 
-        public UsuariosController(Context context)
+        public LoginController(Context context)
         {
             _context = context;
         }

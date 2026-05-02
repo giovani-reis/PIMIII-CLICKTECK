@@ -66,38 +66,42 @@ const closeBtn = document.querySelector(".close-modal");
 const viewBtns = document.querySelectorAll(".view-profile-btn");
 
 // Elementos de dentro do modal para preencher os dados
-const modalName = document.getElementById("modal-name");
-const modalRole = document.getElementById("modal-role");
-const modalImg = document.getElementById("modal-img");
+if (modal && viewBtns.length > 0) {
+    const modalName = document.getElementById("modal-name");
+    const modalRole = document.getElementById("modal-role");
+    const modalImg = document.getElementById("modal-img");
 
-viewBtns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    // Acha o card "pai" do botão clicado
-    const card = e.target.closest(".tech-card");
+    viewBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        // Acha o card "pai" do botão clicado
+        const card = e.target.closest(".tech-card");
+        if (!card) return;
 
-    // Pega as informações do HTML do card
-    const name = card.querySelector(".tech-name").innerText;
-    const role = card.querySelector(".tech-role").innerText;
-    const imgSrc = card.querySelector(".tech-avatar").src;
+        // Pega as informações do HTML do card
+        const name = card.querySelector(".tech-name").innerText;
+        const role = card.querySelector(".tech-role").innerText;
+        const imgSrc = card.querySelector(".tech-avatar").src;
 
-    // Preenche o modal
-    modalName.innerText = name;
-    modalRole.innerText = role;
-    modalImg.src = imgSrc;
+        // Preenche o modal
+        modalName.innerText = name;
+        modalRole.innerText = role;
+        modalImg.src = imgSrc;
 
-    // Mostra o modal
-    modal.classList.add("active");
-  });
-});
+        // Mostra o modal
+        modal.classList.add("active");
+      });
+    });
 
-// Fechar modal no X
-closeBtn.addEventListener("click", () => {
-  modal.classList.remove("active");
-});
+    // Fechar modal no X
+    closeBtn.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
 
-// Fechar modal clicando fora dele
-window.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.classList.remove("active");
-  }
-});
+    // Fechar modal clicando fora dele
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("active");
+      }
+    });
+
+}

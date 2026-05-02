@@ -43,6 +43,12 @@
                        class="btn-primary"
                        style="text-decoration: none">Entrar</a>
                 </li>
+                <li class="mobile-only">
+                    <a asp-controller="Login"
+                       asp-action="Index"
+                       class="btn-outline"
+                       style="text-decoration: none">Entrar</a>
+                </li>
             </ul>
 
             <div class="nav-actions desktop-only">
@@ -55,6 +61,16 @@
               align-items: center;
               justify-content: center;
             ">Entrar</a>
+
+            <a asp-controller="Cadastro"
+                asp-action="Cadastro"
+                   class="btn-primary"
+                style="
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        ">Cadastre-se</a>
             </div>
         </div>
     </nav>
@@ -365,6 +381,6 @@
         new window.VLibras.Widget("https://vlibras.gov.br/app");
     </script>
 
-    <script src="d:\documentos\estudo\pimiii-clickteck\scripts\home.js"></script>
+    <script src="~/home.js"></script>
 </body>
 </html>

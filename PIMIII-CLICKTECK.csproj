@@ -31,13 +31,13 @@
     <None Include="wwwroot\img\site.webmanifest" />
     <None Include="wwwroot\img\Woman.jpg" />
     <None Include="wwwroot\img\프사.jpg" />
-    <None Include="wwwroot\scripts\agendamentos.js" />
-    <None Include="wwwroot\scripts\agendar-reparo.js" />
-    <None Include="wwwroot\scripts\ajuda.js" />
-    <None Include="wwwroot\scripts\dashboard.js" />
-    <None Include="wwwroot\scripts\favoritos.js" />
-    <None Include="wwwroot\scripts\home.js" />
-    <None Include="wwwroot\scripts\main.js" />
+    <None Include="wwwroot\agendamentos.js" />
+    <None Include="wwwroot\agendar-reparo.js" />
+    <None Include="wwwroot\ajuda.js" />
+    <None Include="wwwroot\dashboard.js" />
+    <None Include="wwwroot\favoritos.js" />
+    <None Include="wwwroot\home.js" />
+    <None Include="wwwroot\main.js" />
   </ItemGroup>
 
   <ItemGroup>

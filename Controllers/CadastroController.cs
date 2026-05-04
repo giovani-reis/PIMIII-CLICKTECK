@@ -50,37 +50,25 @@ namespace PIMIII_CLICKTECK.Controllers
             return View();
         }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cadastro([Bind("Id,Nome,Email,Senha,Role")] Usuario usuario)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(usuario);
-        }
-
         public IActionResult Usuario() // Create
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Usuario([Bind("Id,Nome,Email,Senha,Role")] Usuario usuario)
+        public async Task<IActionResult> Usuario([Bind("Id,Nome,Email,Senha,ConfirmarSenha,Role")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
-                /*return RedirectToAction(nameof(Index));*/
+
+                    
+                TempData["SucessoCadastro"] = true;
+                return RedirectToAction("Index", "Login");
+
             }
-            return View();
+            return View(usuario);
         }
 
 

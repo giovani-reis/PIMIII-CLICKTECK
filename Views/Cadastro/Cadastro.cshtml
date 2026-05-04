@@ -46,7 +46,7 @@
                 <div class="selection-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
 
                     @* Opção Cliente *@
-                    <a asp-controller="Cadastro" asp-action="Cliente" class="selection-card" style="text-decoration: none; color: inherit;">
+                    <a asp-controller="Cadastro" asp-action="Usuario" class="selection-card" style="text-decoration: none; color: inherit;">
                         <div class="card-content" style="padding: 1.5rem; border: 2px solid #e2e8f0; border-radius: 12px; transition: all 0.3s ease; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
                             <div class="icon-circle" style="background: #eef2ff; padding: 1rem; border-radius: 50%; color: #4f46e5;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -80,20 +80,7 @@
         </div>
     </div>
 
-    @* CSS Adicional para o efeito de Hover nos Cards *@
-    <style>
-        .selection-card:hover .card-content {
-            border-color: #4f46e5 !important;
-            background-color: #f8fafc;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
 
-        .selection-card:hover .icon-circle {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-    </style>
 
     <script src="~/scripts/main.js" asp-append-version="true"></script>
 </body>

@@ -1,52 +1,171 @@
 ﻿@model PIM_TechTrust.Models.Usuario
 @using PIM_TechTrust.Models.Enums
-
 @{
-    ViewData["Title"] = "Create";
+    Layout = null;
 }
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClickTech | Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
 
-<h1>Create</h1>
+    <!-- Referências de estilo conforme sua estrutura local -->
+    <link rel="stylesheet" href="~/estilos/style.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+    <link rel="manifest" href="img/site.webmanifest" />
+    <style>
+        /* Remove o olho nativo que o navegador coloca automaticamente */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Usuario">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
+        /* Garante que o input não tenha outline azul por cima da nossa borda vermelha */
+        input:focus {
+            outline: none;
+        }
+
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-layout">
+        <!-- BANNER LATERAL (Mantido para padrão visual) -->
+        <div class="auth-banner">
+            <div class="auth-banner-content">
+                <a href="/" class="logo" style="text-decoration: none">
+                    <div class="logo-icon">CT</div>
+                    <span class="logo-text text-white">Click<span>Tech</span></span>
+                </a>
+                <h2>Crie sua conta na maior plataforma de assistência técnica.</h2>
+                <p>Tenha acesso aos melhores profissionais e gerencie seus chamados de forma simples e rápida.</p>
+                <div class="banner-graphic"></div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- SEÇÃO DO FORMULÁRIO -->
+        <div class="auth-form-section">
+            <a href="/" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Voltar para o site
+            </a>
+
+            <div class="auth-box" id="register-box">
+                <div class="auth-header">
+                    <h2>Criar Nova Conta</h2>
+                    <p>Preencha os dados abaixo para se cadastrar.</p>
+                </div>
+
+                <form class="auth-form" asp-action="Usuario" asp-controller="Cadastro" method="POST">
+
+                    <!-- Role automático -->
+                    <input type="hidden" name="Role" value="@Role.Cliente" />
+
+                    <!-- Nome Completo -->
+                    <div class="form-group">
+                        <label for="reg-name">Nome Completo</label>
+                        <input type="text" id="reg-name" name="Nome" placeholder="Ex: João Silva" required />
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="form-group">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" name="Email" placeholder="seu@email.com" required />
+                    </div>
+
+                    <!-- Senha -->
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" name="Senha" placeholder="Crie uma senha" required />
+                            <button type="button" class="toggle-password" data-target="reg-password">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirmar Senha -->
+                    <div class="form-group">
+                        <label for="confirm-password">Confirmar Senha</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirm-password" name="ConfirmarSenha" placeholder="Repita a senha" required />
+                            <button type="button" class="toggle-password" data-target="confirm-password">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <small id="error-msg" style="color: #ff4d4d; display: none; margin-top: 5px;">As senhas não coincidem.</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary auth-btn">Finalizar Cadastro</button>
+                </form>
+
+                <p class="auth-switch">
+                    Já tem conta? <a asp-action="Index" asp-controller="Login">Fazer Login</a>
+                </p>
             </div>
-            <div class="form-group">
-                <label asp-for="Senha" class="control-label"></label>
-                <input asp-for="Senha" class="form-control" />
-                <span asp-validation-for="Senha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control"
-                        asp-items="Html.GetEnumSelectList<Role>()">
-                            <option value="">-- Selecione o Tipo de Usuário --</option>
-                </select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- Script apenas para o funcionamento do "olhinho" da senha -->
+    <script>
+                document.addEventListener('DOMContentLoaded', function() {
+            // 1. Olhinho (Corrigido)
+            document.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const input = document.getElementById(this.getAttribute('data-target'));
+                    input.type = input.type === 'password' ? 'text' : 'password';
+                });
+            });
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+            // 2. Validação com Mensagem em baixo
+            const form = document.querySelector('.auth-form');
+            const senha = document.getElementById('reg-password');
+            const confirma = document.getElementById('confirm-password');
+            const msgErro = document.getElementById('error-msg');
+
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (senha.value !== confirma.value) {
+                        e.preventDefault(); // Trava o envio
+
+                        // Mostra a mensagem e pinta a borda
+                        msgErro.style.display = "block";
+                        confirma.style.border = "2px solid #ff4d4d";
+
+                        confirma.focus();
+                    }
+                });
+            }
+
+            // Limpa o erro quando o usuário volta a digitar
+            confirma.addEventListener('input', () => {
+                msgErro.style.display = "none";
+                confirma.style.border = "";
+            });
+        });
+
+        
+    </script>
+
+    <!-- VLibras -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>new window.VLibras.Widget("https://vlibras.gov.br/app");</script>
+</body>
+</html>

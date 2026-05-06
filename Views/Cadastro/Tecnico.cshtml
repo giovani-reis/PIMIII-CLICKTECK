@@ -1,0 +1,202 @@
+﻿@model PIMIII_CLICKTECK.Models.ViewModels.RegistroTecnicoViewModel
+@using PIM_TechTrust.Models.Enums
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClickTech | Cadastro Técnico</title>
+    <!-- Bootstrap CSS para os componentes do Passo 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/estilos/style.css" />
+
+    <style>
+        .step-content {
+            display: none;
+        }
+
+            .step-content.active {
+                display: block;
+            }
+
+        /* Customizando o scrollbar do grid de especialidades */
+        .especialidades-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .especialidades-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        /* Estilo para os cards de especialidade */
+        .especialidade-item {
+            transition: all 0.2s;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+            .especialidade-item:hover {
+                background-color: #f8f9fa;
+                border-color: #0d6efd;
+            }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-layout">
+        <div class="auth-banner">
+            <div class="auth-banner-content">
+                <a href="/" class="logo" style="text-decoration: none">
+                    <div class="logo-icon">CT</div>
+                    <span class="logo-text text-white">Click<span>Tech</span></span>
+                </a>
+                <h2>Área do Especialista</h2>
+                <p>Configure seu perfil técnico para começar a receber chamados de manutenção de hardware.</p>
+            </div>
+        </div>
+
+        <div class="auth-form-section">
+            <a href="/" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Voltar
+            </a>
+
+            <div class="auth-box" style="max-width: 700px !important">
+                <div class="auth-header">
+                    <h2 id="step-title">1. Dados da Conta</h2>
+                    <p id="step-desc">Preencha seus dados de acesso.</p>
+                </div>
+
+                <form id="formCadastro" class="auth-form" asp-action="Tecnico" asp-controller="Cadastro" method="POST" enctype="multipart/form-data">
+
+                    <!-- PASSO 1: USUÁRIO -->
+                    <div id="passo1" class="step-content active">
+                        <div class="form-group">
+                            <label>Nome Completo</label>
+                            <input type="text" name="Nome" placeholder="João Silva" required />
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input type="email" name="Email" placeholder="seu@email.com" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input type="password" id="reg-password" name="Senha" placeholder="Crie uma senha" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Senha</label>
+                            <input type="password" id="confirm-password" placeholder="Repita a senha" required />
+                            <small id="error-msg" style="color: #ff4d4d; display: none;">As senhas não coincidem.</small>
+                        </div>
+                        <button type="button" onclick="validarEAvancar()" class="btn-primary auth-btn">Próximo: Perfil Técnico</button>
+                    </div>
+
+                    <!-- PASSO 2: PERFIL TÉCNICO (REFORMULADO COM BOOTSTRAP) -->
+                    <div id="passo2" class="step-content">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-bold mb-1">Suas Especialidades</label>
+                                <div class="especialidades-container p-2 border rounded bg-light" style="max-height: 160px; overflow-y: auto;">
+                                    <div class="row g-2">
+                                        @if (ViewBag.Especialidades != null)
+                                        {
+                                            @foreach (var esp in ViewBag.Especialidades)
+                                            {
+                                                <div class="col-12">
+                                                    <div class="especialidade-item bg-white d-flex align-items-center">
+                                                        <input class="form-check-input me-2" type="checkbox" name="EspecialidadesIds" value="@esp.Id" id="esp-@esp.Id">
+                                                        <label class="form-check-label small text-truncate" for="esp-@esp.Id">
+                                                            @esp.Nome
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <small id="esp-error-msg" style="color: #ff4d4d; display: none; margin-top: 5px;">
+                                    Por favor, selecione ao menos uma especialidade.
+                                </small>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold mb-1">Foto de Perfil</label>
+                                <input type="file" class="form-control form-control-sm" name="Foto" accept="image/*" />
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold mb-1">Sobre Você</label>
+                                <textarea name="Descricao" class="form-control" rows="3" placeholder="Ex: Técnico há 5 anos especializado em notebooks e placas-mãe."></textarea>
+                            </div>
+
+                            <div class="col-12 d-flex gap-2 mt-3">
+                                <button type="button" onclick="mudarPasso(1)" class="btn btn-outline-secondary w-100 py-2 fw-bold">Voltar</button>
+                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Concluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mudarPasso(passo) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('passo' + passo).classList.add('active');
+
+            const title = document.getElementById('step-title');
+            const desc = document.getElementById('step-desc');
+            if(passo === 2) {
+                title.innerText = "2. Perfil Técnico";
+                desc.innerText = "Quase lá! Personalize sua apresentação.";
+            } else {
+                title.innerText = "1. Dados da Conta";
+                desc.innerText = "Preencha seus dados de acesso.";
+            }
+        }
+
+        function validarEAvancar() {
+            const senha = document.getElementById('reg-password').value;
+            const confirma = document.getElementById('confirm-password').value;
+            const msgErro = document.getElementById('error-msg');
+
+            if (senha !== confirma || senha === "") {
+                msgErro.style.display = "block";
+                document.getElementById('confirm-password').style.border = "1px solid #ff4d4d";
+                return;
+            }
+            mudarPasso(2);
+        }
+
+        document.getElementById('formCadastro').addEventListener('submit', function (event) {
+        // Busca todos os checkboxes de especialidades que estão marcados
+            const checkboxes = document.querySelectorAll('input[name="EspecialidadesIds"]:checked');
+            const msgErroEsp = document.getElementById('esp-error-msg');
+            const container = document.querySelector('.especialidades-container');
+
+            if (checkboxes.length === 0) {
+                // Se nenhum estiver marcado, impede o envio do formulário
+                event.preventDefault();
+
+                // Mostra a mensagem de erro e destaca o container
+                msgErroEsp.style.display = "block";
+                container.style.border = "1px solid #ff4d4d";
+
+                // Scroll suave até o erro para o usuário ver
+                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                // Se estiver tudo ok, garante que a mensagem de erro suma
+                msgErroEsp.style.display = "none";
+                container.style.border = "1px solid #dee2e6";
+            }
+        });
+    </script>
+</body>
+</html>

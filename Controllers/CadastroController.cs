@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Extensions.Hosting;
+using NuGet.Protocol.Plugins;
 using PIM_TechTrust.Models;
 using PIM_TechTrust.Models.Enums;
 using PIMIII_CLICKTECK.Data;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace PIMIII_CLICKTECK.Controllers
 {
@@ -65,6 +67,7 @@ namespace PIMIII_CLICKTECK.Controllers
         {
             if (ModelState.IsValid)
             {
+                usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
 
@@ -100,7 +103,7 @@ namespace PIMIII_CLICKTECK.Controllers
             {
                 Nome = model.Nome,
                 Email = model.Email,
-                Senha = model.Senha, // Dica: use hash para senhas!
+                Senha =  BCrypt.Net.BCrypt.HashPassword(model.Senha),
                 Role = Role.Tecnico
             };
 

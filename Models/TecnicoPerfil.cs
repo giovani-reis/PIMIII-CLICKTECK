@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PIM_TechTrust.Models
 {
@@ -10,6 +11,8 @@ namespace PIM_TechTrust.Models
 
         public string? Descricao { get; set; }
         public string? FotoUrl { get; set; }
+        [NotMapped]
+        public IFormFile? FotoFile { get; set; }
         public bool Disponivel { get; set; }
 
         public ICollection<TecnicoEspecialidade> Especialidades { get; set; }

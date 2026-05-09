@@ -39,7 +39,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 switch (usuario.Role)
                 {
                     case Role.Cliente:
-                        return RedirectToAction("Index", "DashBoard");
+                        return RedirectToAction("Index", "AreaCliente");
                     case Role.Tecnico:
                         return RedirectToAction("Index", "DashBoard");
                     case Role.Admin:

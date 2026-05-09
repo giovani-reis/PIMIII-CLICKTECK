@@ -1,4 +1,4 @@
-﻿namespace PIM_TechTrust.Models
+﻿        namespace PIM_TechTrust.Models
 {
     public class TecnicoEspecialidade
     {

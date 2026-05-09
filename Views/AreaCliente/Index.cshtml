@@ -1,0 +1,132 @@
+﻿@model IEnumerable<PIMIII_CLICKTECK.Models.ViewModels.DashBoardViewModel>
+
+@{
+    Layout = null; // Ou use seu _Layout se preferir
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTrust | Técnicos Disponíveis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Use ~/ para caminhos corretos no ASP.NET -->
+    <link rel="stylesheet" href="~/estilos/dashboard.css">
+</head>
+<body class="dashboard-body">
+
+    <nav class="dash-navbar">
+        <div class="dash-nav-container">
+            <div class="logo" onclick="location.href='@Url.Action("Index", "Home")'" style="cursor: pointer;">
+                <div class="logo-icon">CT</div>
+                <span class="logo-text">Click<span>Tech</span></span>
+            </div>
+
+            <div class="search-bar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" placeholder="Buscar por problema ou aparelho...">
+            </div>
+
+            <div class="user-menu">
+                <!-- Mantive sua estrutura de notificações e perfil -->
+                <div class="user-profile" id="user-profile-btn">
+                    <img src="~/img/perfil-padrao.jpg" alt="Foto de Perfil">
+                    <span>Olá, @User.Identity.Name</span> <!-- Pega o nome do usuário logado -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dash-main">
+        <header class="dash-header">
+            <div>
+                <h1>Técnicos Disponíveis</h1>
+                <p>Encontre o especialista ideal para o seu reparo agora mesmo.</p>
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="smartphones">Smartphones</button>
+                <button class="filter-btn" data-filter="notebooks">Notebooks</button>
+            </div>
+        </header>
+
+        <div class="tech-grid" id="tech-grid">
+
+            @foreach (var tecnico in Model)
+            {
+                <div class="tech-card"
+                     data-category="smartphones"
+                     data-description="@tecnico.Descricao">
+
+                    <div class="tech-card-header">
+                        <button class="btn-like" title="Curtir Técnico">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                        <div class="tech-avatar-wrapper">
+                            <img src="~/fotos_perfil/@tecnico.FotoUrl" alt="Técnico" class="tech-avatar">
+                        </div>
+                        <div class="tech-info">
+                            <h3 class="tech-name">@tecnico.Nome</h3>
+                            <span class="tech-role">Técnico</span>
+                        </div>
+                    </div>
+
+                    <div class="tech-stats">
+                        <div class="stat"><span class="star">★</span> @tecnico.Avaliacao</div>
+                        <div class="stat">@tecnico.QtdReparos reparos</div>
+                    </div>
+
+                    <div class="tech-skills">
+                        @foreach (var tag in tecnico.Tags)
+                        {
+                            <span class="skill-tag">@tag</span>
+                        }
+                    </div>
+
+                    <div class="tech-actions">
+                        <!-- Passamos os dados para o JS via atributos data -->
+                        <button class="btn-outline view-profile-btn"
+                                data-nome="@tecnico.Nome"
+                                data-desc="@tecnico.Descricao"
+                                data-img="~/fotos_perfil/@tecnico.FotoUrl">
+                            Ver Perfil
+                        </button>
+
+                        <a asp-action="CriarAtendimento" asp-route-tecnicoId="@tecnico.Id" class="btn-primary" style="text-decoration:none; text-align:center;">
+                            Agendar Reparo
+                        </a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </main>
+
+    <!-- Modal permanece igual, mas será preenchido pelo dashboard.js atualizado -->
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <div class="modal-avatar">
+                    <img id="modal-img" src="" alt="Foto">
+                </div>
+                <div class="modal-title">
+                    <h2 id="modal-name">Nome do Técnico</h2>
+                    <p id="modal-role">Especialidade</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h3>Sobre</h3>
+                <p id="modal-desc">Descrição carregada via JS...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/dashboard.js"></script>
+</body>
+</html>

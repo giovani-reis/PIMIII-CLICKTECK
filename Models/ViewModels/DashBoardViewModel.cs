@@ -1,8 +1,11 @@
-﻿namespace PIMIII_CLICKTECK.Models.ViewModels
+﻿using PIM_TechTrust.Models;
+
+namespace PIMIII_CLICKTECK.Models.ViewModels
 {
     public class DashBoardViewModel
     {
         public int Id { get; set; }
+        public int IdTecnico { get; set; }
         public string Nome { get; set; }
         public string FotoUrl { get; set; }
         public string Descricao { get; set; }

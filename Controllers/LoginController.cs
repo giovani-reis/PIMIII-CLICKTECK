@@ -39,6 +39,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 switch (usuario.Role)
                 {
                     case Role.Cliente:
+                        TempData["Usu"] = usuario.Id;
                         return RedirectToAction("Index", "AreaCliente");
                     case Role.Tecnico:
                         return RedirectToAction("Index", "DashBoard");

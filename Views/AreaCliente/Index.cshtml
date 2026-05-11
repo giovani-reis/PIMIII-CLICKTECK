@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PIMIII_CLICKTECK.Models.ViewModels.DashBoardViewModel>
+﻿@model PIMIII_CLICKTECK.Models.ViewModels.TelaUsuarioViewModel
 
 @{
     Layout = null; // Ou use seu _Layout se preferir
@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechTrust | Técnicos Disponíveis</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Use ~/ para caminhos corretos no ASP.NET -->
     <link rel="stylesheet" href="~/estilos/dashboard.css">
@@ -18,7 +19,7 @@
 
     <nav class="dash-navbar">
         <div class="dash-nav-container">
-            <div class="logo" onclick="location.href='@Url.Action("Index", "Home")'" style="cursor: pointer;">
+            <div class="logo" onclick="location.href='@Url.Action("Index", "AreaCliente")'" style="cursor: pointer;">
                 <div class="logo-icon">CT</div>
                 <span class="logo-text">Click<span>Tech</span></span>
             </div>
@@ -31,8 +32,7 @@
             <div class="user-menu">
                 <!-- Mantive sua estrutura de notificações e perfil -->
                 <div class="user-profile" id="user-profile-btn">
-                    <img src="~/img/perfil-padrao.jpg" alt="Foto de Perfil">
-                    <span>Olá, @User.Identity.Name</span> <!-- Pega o nome do usuário logado -->
+                    <span>Olá, @Model.Usuario.Nome</span> <!-- Pega o nome do usuário logado -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
             </div>
@@ -51,10 +51,15 @@
                 <button class="filter-btn" data-filter="notebooks">Notebooks</button>
             </div>
         </header>
-
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                @TempData["MensagemSucesso"]
+            </div>
+        }
         <div class="tech-grid" id="tech-grid">
 
-            @foreach (var tecnico in Model)
+            @foreach (var tecnico in Model.Tecnico)
             {
                 <div class="tech-card"
                      data-category="smartphones"
@@ -95,10 +100,9 @@
                                 data-img="~/fotos_perfil/@tecnico.FotoUrl">
                             Ver Perfil
                         </button>
-
-                        <a asp-action="CriarAtendimento" asp-route-tecnicoId="@tecnico.Id" class="btn-primary" style="text-decoration:none; text-align:center;">
+                        <button class="btn btn-primary w-100 py-2 fw-bold" onclick="prepararAgendamento('@tecnico.IdTecnico', '@tecnico.Nome')">
                             Agendar Reparo
-                        </a>
+                        </button>
                     </div>
                 </div>
             }
@@ -111,12 +115,8 @@
         <div class="modal-content">
             <button class="close-modal">&times;</button>
             <div class="modal-header">
-                <div class="modal-avatar">
-                    <img id="modal-img" src="" alt="Foto">
-                </div>
                 <div class="modal-title">
                     <h2 id="modal-name">Nome do Técnico</h2>
-                    <p id="modal-role">Especialidade</p>
                 </div>
             </div>
             <div class="modal-body">
@@ -125,7 +125,44 @@
             </div>
         </div>
     </div>
+    <div id="agendar-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="fecharAgendamento()">&times;</button>
+            <div class="modal-header">
+                <h2>Solicitar Reparo</h2>
+                <p>Técnico: <strong id="agendar-tecnico-nome"></strong></p>
+            </div>
 
+            <form asp-controller="AreaCliente" asp-action="CriarAtendimento" method="post">
+                <!-- Campos Ocultos Obrigatórios -->
+                <input type="hidden" name="ClienteId" value="@Model.Usuario.Id" />
+                <input type="hidden" id="input-tecnico-id" name="TecnicoId" value="" />
+                <input type="hidden" name="Status" value="Solicitado" />
+
+                <div class="modal-body">
+                    <label for="Descricao">Descreva o problema do seu aparelho:</label>
+                    <textarea name="Descricao" id="Descricao" rows="4" class="form-control"
+                              placeholder="Ex: Meu iPhone caiu na água e não liga mais..." required></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-outline" onclick="fecharAgendamento()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Solicitação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/dashboard.js"></script>
 </body>

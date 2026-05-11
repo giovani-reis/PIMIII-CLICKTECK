@@ -40,7 +40,6 @@ document.querySelectorAll(".view-profile-btn").forEach((btn) => {
 
         document.getElementById("modal-name").innerText = name;
         document.getElementById("modal-desc").innerText = desc;
-        document.getElementById("modal-img").src = img;
 
         if (modal) modal.classList.add("active");
     });
@@ -96,3 +95,14 @@ document.querySelectorAll(".btn-like").forEach((button) => {
         this.classList.toggle("liked");
     });
 });
+
+function prepararAgendamento(id, nome) {
+    // 1. Coloca o ID do técnico no input hidden do formulário
+    document.getElementById('input-tecnico-id').value = id;
+
+    // 2. (Opcional) Mostra o nome dele no título do modal para o cliente ter certeza
+    document.getElementById('agendar-tecnico-nome').innerText = nome;
+
+    // 3. Abre o modal (exemplo de classe active)
+    document.getElementById('agendar-modal').classList.add('active');
+}

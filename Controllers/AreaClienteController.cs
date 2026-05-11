@@ -24,12 +24,23 @@ namespace PIMIII_CLICKTECK.Controllers
 
         public IActionResult Index()
         {
+            var usuLogado = TempData["Usu"];
+            if (usuLogado == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            TempData.Keep("Usu");
+
+            int idUsuario = (int)usuLogado;
+
+
             var tecnicos = _context.TecnicoPerfis
                 .Include(t => t.Usuario)
                 .Where(t => t.Disponivel)
                 .Select(t => new DashBoardViewModel
                 {
                     Id = t.Id,
+                    IdTecnico = t.UsuarioId,
                     Nome = t.Usuario.Nome,
                     FotoUrl = t.FotoUrl ?? "/img/default-avatar.jpg",
                     Descricao = t.Descricao,
@@ -41,7 +52,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
                     // 2. Contagem de Reparos (Retorna 0 se não houver correspondência)
                     QtdReparos = _context.Atendimentos
-                        .Count(a => a.TecnicoId == t.Id && a.Status == "Finalizado"),
+                        .Count(a => a.TecnicoId == t.UsuarioId && a.Status == "Finalizado"),
 
                     // 3. Pegando as Especialidades Reais da sua tabela de ligação
                     Tags = _context.TecnicoEspecialidades
@@ -50,7 +61,34 @@ namespace PIMIII_CLICKTECK.Controllers
                         .ToList()
                 }).ToList();
 
-            return View(tecnicos);
+            var telaUsuario = new TelaUsuarioViewModel
+            {
+                Tecnico = tecnicos,
+                Usuario = _context.Usuarios.Find(idUsuario)
+            };
+
+            return View(telaUsuario);
+        }
+
+        [HttpPost]
+        public IActionResult CriarAtendimento(Atendimento atendimento)
+        {
+            TempData.Keep("Usu");
+            // O Entity Framework preenche o objeto 'atendimento' com os nomes dos inputs do seu Modal
+
+            // 1. Forçamos os dados que o usuário não preenche manualmente
+            atendimento.DataAbertura = DateTime.Now;
+            atendimento.Status = "Solicitado";
+
+            // 2. Salva no banco
+            _context.Atendimentos.Add(atendimento);
+            _context.SaveChanges();
+
+            // 3. Cria uma mensagem para exibir na volta
+            TempData["MensagemSucesso"] = "Solicitação de reparo enviada com sucesso!";
+
+            // 4. Redireciona de volta para a vitrine de técnicos
+            return RedirectToAction("Index");
         }
 
         /*

@@ -4,19 +4,25 @@ const addSafeListener = (id, event, callback) => {
     if (el) el.addEventListener(event, callback);
 };
 
-// === LÓGICA DE FILTROS ===
+// === LÓGICA DE FILTROS REFEITA ===
 const filterBtns = document.querySelectorAll(".filter-btn");
 const techCards = document.querySelectorAll(".tech-card");
 
 filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
+        // 1. Atualiza visual do botão ativo
         filterBtns.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-        const filterValue = btn.getAttribute("data-filter");
+
+        const filterValue = btn.getAttribute("data-filter").toLowerCase();
+
+        // 2. Filtra os cards
         techCards.forEach((card) => {
             const categories = card.getAttribute("data-category") || "";
-            if (filterValue === "todos" || categories.toLowerCase().includes(filterValue.toLowerCase())) {
-                card.style.display = "block";
+
+            // Lógica: se for "todos" OU se a categoria do card contém o valor do filtro
+            if (filterValue === "todos" || categories.includes(filterValue)) {
+                card.style.display = "block"; // Mantém o flex para não quebrar o layout interno
             } else {
                 card.style.display = "none";
             }

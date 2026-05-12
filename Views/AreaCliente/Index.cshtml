@@ -148,6 +148,8 @@
                 <button class="filter-btn active" data-filter="todos">Todos</button>
                 <button class="filter-btn" data-filter="smartphones">Smartphones</button>
                 <button class="filter-btn" data-filter="notebooks">Notebooks</button>
+                <button class="filter-btn" data-filter="hardware">Hardware</button>
+                <button class="filter-btn" data-filter="tvs">TVs & Outros</button>
             </div>
         </header>
         @if (TempData["MensagemSucesso"] != null)
@@ -160,8 +162,10 @@
 
             @foreach (var tecnico in Model.Tecnico)
             {
+                string categoriasBusca = string.Join(" ", tecnico.Tags).ToLower();
+
                 <div class="tech-card"
-                     data-category="smartphones"
+                     data-category="@categoriasBusca"
                      data-description="@tecnico.Descricao">
 
                     <div class="tech-card-header">

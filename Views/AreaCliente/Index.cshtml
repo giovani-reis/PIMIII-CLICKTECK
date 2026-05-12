@@ -14,6 +14,105 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Use ~/ para caminhos corretos no ASP.NET -->
     <link rel="stylesheet" href="~/estilos/dashboard.css">
+
+    <style>
+        /* --- Estilização do Modal de Agendamento --- */
+
+        .tech-selection-info {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        /* Container do campo de texto */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        /* Textarea Premium */
+        .custom-textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #1e293b;
+            background-color: #f8fafc;
+            resize: none;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+            .custom-textarea:focus {
+                border-color: #3b82f6;
+                background-color: #ffffff;
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            }
+
+        .helper-text {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Footer com botões lado a lado */
+        .modal-footer-custom {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Botão Cancelar */
+        .btn-cancel-modal {
+            flex: 1;
+            padding: 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            color: #64748b;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+            .btn-cancel-modal:hover {
+                background: #f1f5f9;
+                color: #0f172a;
+            }
+
+        /* Botão Confirmar */
+        .btn-confirm-modal {
+            flex: 2;
+            padding: 12px;
+            background: #0ea5e9;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+        }
+
+            .btn-confirm-modal:hover {
+                transform: translateY(-1px);
+            }
+
+            .btn-confirm-modal:active {
+                transform: translateY(0);
+            }
+    </style>
 </head>
 <body class="dashboard-body">
 
@@ -127,27 +226,37 @@
     </div>
     <div id="agendar-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="close-modal" onclick="fecharAgendamento()">&times;</button>
+            <button type="button" class="close-modal" onclick="fecharAgendamento(event)">&times;</button>
+
             <div class="modal-header">
                 <h2>Solicitar Reparo</h2>
-                <p>Técnico: <strong id="agendar-tecnico-nome"></strong></p>
+                <p class="tech-selection-info">Técnico: <strong id="agendar-tecnico-nome"></strong></p>
             </div>
 
             <form asp-controller="AreaCliente" asp-action="CriarAtendimento" method="post">
-                <!-- Campos Ocultos Obrigatórios -->
+                <!-- Campos Ocultos -->
                 <input type="hidden" name="ClienteId" value="@Model.Usuario.Id" />
                 <input type="hidden" id="input-tecnico-id" name="TecnicoId" value="" />
                 <input type="hidden" name="Status" value="Solicitado" />
 
                 <div class="modal-body">
-                    <label for="Descricao">Descreva o problema do seu aparelho:</label>
-                    <textarea name="Descricao" id="Descricao" rows="4" class="form-control"
-                              placeholder="Ex: Meu iPhone caiu na água e não liga mais..." required></textarea>
+                    <div class="form-group">
+                        <label for="Descricao" class="field-label">Descreva o problema do seu aparelho</label>
+                        <textarea name="Descricao" id="Descricao" rows="5"
+                                  class="custom-textarea"
+                                  placeholder="Ex: Meu celular caiu e a tela não acende mais, mas ele ainda vibra..."
+                                  required></textarea>
+                        <small class="helper-text">Isso ajuda o técnico a preparar o orçamento.</small>
+                    </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button class="btn-outline" onclick="fecharAgendamento()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Confirmar Solicitação</button>
+                <div class="modal-footer-custom">
+                    <button type="button" class="btn-cancel-modal" onclick="fecharAgendamento(event)">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-confirm-modal">
+                        Confirmar Solicitação
+                    </button>
                 </div>
             </form>
         </div>

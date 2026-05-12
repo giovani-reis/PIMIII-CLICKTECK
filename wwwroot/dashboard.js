@@ -12,11 +12,8 @@ filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
         filterBtns.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-
         const filterValue = btn.getAttribute("data-filter");
-
         techCards.forEach((card) => {
-            // No MVC, garantimos que o data-category venha preenchido do banco
             const categories = card.getAttribute("data-category") || "";
             if (filterValue === "todos" || categories.toLowerCase().includes(filterValue.toLowerCase())) {
                 card.style.display = "block";
@@ -27,64 +24,81 @@ filterBtns.forEach((btn) => {
     });
 });
 
-// === LÓGICA DO MODAL (REVISADA) ===
-const modal = document.getElementById("profile-modal");
-const closeBtn = document.querySelector(".close-modal");
+// === LÓGICA DO MODAL DE PERFIL ===
+const profileModal = document.getElementById("profile-modal");
+const closeProfileBtn = profileModal?.querySelector(".close-modal");
 
 document.querySelectorAll(".view-profile-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-        // Agora pegamos os dados diretamente dos atributos data que colocamos no botão no C#
+    btn.addEventListener("click", () => {
         const name = btn.getAttribute("data-nome");
         const desc = btn.getAttribute("data-desc");
-        const img = btn.getAttribute("data-img");
-
         document.getElementById("modal-name").innerText = name;
         document.getElementById("modal-desc").innerText = desc;
-
-        if (modal) modal.classList.add("active");
+        if (profileModal) profileModal.classList.add("active");
     });
 });
 
-if (closeBtn) {
-    closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+if (closeProfileBtn) {
+    closeProfileBtn.addEventListener("click", () => profileModal.classList.remove("active"));
 }
 
-// === MENU DE PERFIL E LOGOFF (CORREÇÃO DA LINHA 120) ===
+// === LÓGICA DO MODAL DE AGENDAMENTO ===
+function prepararAgendamento(id, nome) {
+    const modalAgendar = document.getElementById('agendar-modal');
+    const inputId = document.getElementById('input-tecnico-id');
+    const labelNome = document.getElementById('agendar-tecnico-nome');
+
+    if (inputId) inputId.value = id;
+    if (labelNome) labelNome.innerText = nome;
+    if (modalAgendar) modalAgendar.classList.add('active');
+}
+
+// Função para fechar o agendamento (usada nos botões onclick)
+function fecharAgendamento() {
+    const modalAgendar = document.getElementById('agendar-modal');
+    if (modalAgendar) modalAgendar.classList.remove('active');
+}
+
+// === INTERAÇÕES DE UI (DROPDOWNS E MENUS) ===
 addSafeListener("user-profile-btn", "click", (e) => {
     const dropdown = document.getElementById("dropdown-menu");
     if (dropdown) dropdown.classList.toggle("active");
     e.stopPropagation();
 });
 
-// CORREÇÃO DO LOGOFF: No MVC, recomendamos usar um formulário para Logout por segurança
 addSafeListener("btn-logoff", "click", (e) => {
     e.preventDefault();
     if (confirm("Deseja realmente sair?")) {
-        // Se você tiver uma Action de Logout no Controller:
         window.location.href = "/Account/Logout";
     }
 });
 
-// === NOTIFICAÇÕES ===
 addSafeListener("notification-btn", "click", (e) => {
     const notifMenu = document.getElementById("notification-menu");
     if (notifMenu) notifMenu.classList.toggle("active");
     e.stopPropagation();
 });
 
-// Fechar menus ao clicar fora
+// === GLOBAL: FECHAR TUDO AO CLICAR FORA ===
 window.addEventListener("click", (e) => {
     const dropdown = document.getElementById("dropdown-menu");
     const notifMenu = document.getElementById("notification-menu");
+    const modalAgendar = document.getElementById('agendar-modal');
 
-    if (dropdown && !document.getElementById("user-profile-btn").contains(e.target)) {
+    // Fechar Dropdowns
+    if (dropdown && !document.getElementById("user-profile-btn")?.contains(e.target)) {
         dropdown.classList.remove("active");
     }
-    if (notifMenu && !document.getElementById("notification-btn").contains(e.target)) {
+    if (notifMenu && !document.getElementById("notification-btn")?.contains(e.target)) {
         notifMenu.classList.remove("active");
     }
-    if (e.target === modal) {
-        modal.classList.remove("active");
+
+    // Fechar Modais ao clicar no fundo escuro (overlay)
+    if (e.target === profileModal) {
+        profileModal.classList.remove("active");
+    }
+    if (e.target === modalAgendar) {
+        modalAgendar.classList.remove("active");
     }
 });
 
@@ -95,14 +109,3 @@ document.querySelectorAll(".btn-like").forEach((button) => {
         this.classList.toggle("liked");
     });
 });
-
-function prepararAgendamento(id, nome) {
-    // 1. Coloca o ID do técnico no input hidden do formulário
-    document.getElementById('input-tecnico-id').value = id;
-
-    // 2. (Opcional) Mostra o nome dele no título do modal para o cliente ter certeza
-    document.getElementById('agendar-tecnico-nome').innerText = nome;
-
-    // 3. Abre o modal (exemplo de classe active)
-    document.getElementById('agendar-modal').classList.add('active');
-}

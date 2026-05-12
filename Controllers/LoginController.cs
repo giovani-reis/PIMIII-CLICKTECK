@@ -42,9 +42,10 @@ namespace PIMIII_CLICKTECK.Controllers
                         TempData["Usu"] = usuario.Id;
                         return RedirectToAction("Index", "AreaCliente");
                     case Role.Tecnico:
-                        return RedirectToAction("Index", "DashBoard");
+                        TempData["Tecnico"] = usuario.Id;
+                        return RedirectToAction("Index", "AreaTecnico");
                     case Role.Admin:
-                        return RedirectToAction("Index", "DashBoard");
+                        return RedirectToAction("Index", "AreaAdmin");
 
 
                 }

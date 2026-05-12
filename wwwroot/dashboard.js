@@ -115,3 +115,23 @@ document.querySelectorAll(".btn-like").forEach((button) => {
         this.classList.toggle("liked");
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profileBtn = document.getElementById('user-profile-btn');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    if (profileBtn && dropdownMenu) {
+        // Abre/Fecha ao clicar no perfil
+        profileBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); // Impede que o clique feche imediatamente
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Fecha se clicar em qualquer outro lugar da tela
+        document.addEventListener('click', function (e) {
+            if (!profileBtn.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
+});

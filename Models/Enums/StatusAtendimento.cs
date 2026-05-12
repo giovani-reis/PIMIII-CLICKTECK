@@ -1,10 +1,14 @@
-﻿namespace PIM_TechTrust.Models.Enums
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PIM_TechTrust.Models.Enums
 {
     public enum StatusAtendimento 
     {
-        Aberto, 
-        EmAndamento, 
-        Concluido, 
-        Cancelado 
+        Solicitado,
+        [Display(Name = "Pendente Aprovação")]
+        PendenteAprovacao,
+        Aprovado,
+        Recusado,
+        Finalizado
     }
 }

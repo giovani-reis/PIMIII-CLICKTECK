@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PIMIII_CLICKTECK.Data;
 using PIM_TechTrust.Models;
+using PIM_TechTrust.Models.Enums;
+using PIMIII_CLICKTECK.Data;
 using PIMIII_CLICKTECK.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PIMIII_CLICKTECK.Controllers
 {
@@ -52,7 +53,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
                     // 2. Contagem de Reparos (Retorna 0 se não houver correspondência)
                     QtdReparos = _context.Atendimentos
-                        .Count(a => a.TecnicoId == t.UsuarioId && a.Status == "Finalizado"),
+                        .Count(a => a.TecnicoId == t.UsuarioId && a.Status == StatusAtendimento.Finalizado),
 
                     // 3. Pegando as Especialidades Reais da sua tabela de ligação
                     Tags = _context.TecnicoEspecialidades
@@ -78,7 +79,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
             // 1. Forçamos os dados que o usuário não preenche manualmente
             atendimento.DataAbertura = DateTime.Now;
-            atendimento.Status = "Solicitado";
+            atendimento.Status = StatusAtendimento.Solicitado;
 
             // 2. Salva no banco
             _context.Atendimentos.Add(atendimento);

@@ -1,4 +1,6 @@
-﻿namespace PIM_TechTrust.Models
+﻿using PIM_TechTrust.Models.Enums;
+
+namespace PIM_TechTrust.Models
 {
     public class Atendimento
     {
@@ -20,7 +22,7 @@
         public string Descricao { get; set; } //Problema relatado pelo cliente
 
         
-        public string Status { get; set; } // Solicitado / Pendente Aprovação / Aprovado / Recusado / Finalizado
+        public StatusAtendimento Status { get; set; } // Solicitado / Pendente Aprovação / Aprovado / Recusado / Finalizado
 
         public DateTime DataAbertura { get; set; }
         public DateTime? DataConclusao { get; set; }

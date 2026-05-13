@@ -8,7 +8,7 @@ namespace PIM_TechTrust.Models.Enums
         [Display(Name = "Pendente Aprovação")]
         PendenteAprovacao,
         Aprovado,
-        Recusado,
+        Cancelado,
         Finalizado
     }
 }

@@ -19,6 +19,7 @@ namespace PIM_TechTrust.Models
         public decimal? ValorOrcamento { get; set; }
         public string? ObservacaoTecnico { get; set; }
 
+        public string Aparelho { get; set; } // Ex: "iPhone 13", "Dell G15"
         public string Descricao { get; set; } //Problema relatado pelo cliente
 
         

@@ -76,3 +76,30 @@ if (formAvaliacao) {
     fecharAvaliacao();
   });
 }
+
+document.querySelectorAll('.btn-avaliar').forEach(btn => {
+    btn.addEventListener('click', function () {
+        document.getElementById('eval-tech-name').innerText = this.dataset.tech;
+        document.getElementById('eval-atendimento-id').value = this.dataset.id;
+        document.getElementById('modal-avaliacao').classList.add('active');
+    });
+});
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Remove a classe ativa dos outros botões
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filterValue = this.getAttribute('data-filter');
+
+        // Filtra os cards baseados no data-status
+        document.querySelectorAll('.appointment-card').forEach(card => {
+            if (filterValue === 'todos' || card.getAttribute('data-status') === filterValue) {
+                card.style.display = 'flex'; // ou 'block', dependendo do seu CSS original
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});

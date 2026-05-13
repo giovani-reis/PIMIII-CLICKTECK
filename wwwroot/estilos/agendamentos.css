@@ -1,3 +1,42 @@
+/* Linha cinza fina que separa o topo do card da área de botões */
+.card-divider {
+    border: 0;
+    border-top: 1px solid #f0f0f0;
+    margin: 15px 0;
+    width: 100%;
+}
+
+/* Container de botões alinhado à direita */
+.appointment-actions.right-aligned {
+    display: flex;
+    justify-content: flex-end; /* Manda os botões para a direita */
+    gap: 10px;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+    /* Impede que os botões ocupem a largura toda */
+    .appointment-actions.right-aligned button,
+    .appointment-actions.right-aligned form {
+        width: auto !important;
+        flex: 0 1 auto !important;
+        padding: 8px 20px;
+    }
+
+/* Botão de detalhes (Estilo azul da imagem) */
+.btn-primary.btn-detalhes {
+    background-color: #00a0e4;
+    border: none;
+    color: white;
+}
+
+/* Botão de Chat (Estilo branco com borda) */
+.btn-outline.btn-chat {
+    background: white;
+    border: 1px solid #e0e0e0;
+    color: #333;
+}
+
 :root {
   --primary-blue: #0ea5e9;
   --dark-blue: #0284c7;

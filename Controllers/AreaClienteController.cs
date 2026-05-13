@@ -80,7 +80,7 @@ namespace PIMIII_CLICKTECK.Controllers
             // 1. Forçamos os dados que o usuário não preenche manualmente
             atendimento.DataAbertura = DateTime.Now;
             atendimento.Status = StatusAtendimento.Solicitado;
-
+            
             // 2. Salva no banco
             _context.Atendimentos.Add(atendimento);
             _context.SaveChanges();
@@ -90,6 +90,62 @@ namespace PIMIII_CLICKTECK.Controllers
 
             // 4. Redireciona de volta para a vitrine de técnicos
             return RedirectToAction("Index");
+        }
+
+        // Action para carregar a página de listagem
+        public IActionResult MeusAgendamentos()
+        {
+            var usuLogado = TempData["Usu"];
+            if (usuLogado == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            TempData.Keep("Usu"); // Mantém o usuário logado na sessão
+
+            int idUsuario = (int)usuLogado;
+
+            // Buscamos os atendimentos e transformamos para a ViewModel que criamos
+            var agendamentos = _context.Atendimentos
+                .Include(a => a.Tecnico) // Traz os dados do usuário técnico
+                .Where(a => a.ClienteId == idUsuario)
+                .OrderByDescending(a => a.DataAbertura)
+                .Select(a => new MeusAgendamentosViewModel
+                {
+                    AtendimentoId = a.Id,
+                    TecnicoNome = a.Tecnico.Nome,
+                    // Buscamos a foto e especialidade através do Perfil do Técnico
+                    TecnicoFoto = _context.TecnicoPerfis
+                                    .Where(p => p.UsuarioId == a.TecnicoId)
+                                    .Select(p => p.FotoUrl)
+                                    .FirstOrDefault() ?? "/img/default-avatar.jpg",
+
+                    TecnicoEspecialidade = _context.TecnicoEspecialidades
+                                            .Include(te => te.Especialidade)
+                                            .Where(te => te.TecnicoPerfil.UsuarioId == a.TecnicoId)
+                                            .Select(te => te.Especialidade.Nome)
+                                            .FirstOrDefault() ?? "Técnico Especialista",
+
+                    ServicoDescricao = $"{a.Aparelho} - {a.Descricao}",
+                    DataAbertura = a.DataAbertura,
+                    Status = a.Status.ToString().ToUpper() // Usamos ToUpper para facilitar o switch no HTML
+                })
+                .ToList();
+
+            return View(agendamentos);
+        }
+
+        // Action para processar o cancelamento pelo cliente
+        [HttpPost]
+        public IActionResult CancelarAtendimento(int id)
+        {
+            var atendimento = _context.Atendimentos.Find(id);
+            if (atendimento != null && atendimento.Status == StatusAtendimento.Solicitado)
+            {
+                atendimento.Status = StatusAtendimento.Cancelado;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Agendamento cancelado com sucesso.";
+            }
+            return RedirectToAction("MeusAgendamentos");
         }
 
         /*

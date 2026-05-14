@@ -6,6 +6,7 @@
         public string TecnicoNome { get; set; }
         public string TecnicoEspecialidade { get; set; }
         public string TecnicoFoto { get; set; }
+        public string Modelo { get; set; }
         public string ServicoDescricao { get; set; }
         public DateTime DataAbertura { get; set; }
         public string Status { get; set; }

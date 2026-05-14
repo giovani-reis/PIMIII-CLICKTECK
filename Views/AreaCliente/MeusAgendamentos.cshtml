@@ -67,6 +67,52 @@
             .appointment-actions button, .appointment-actions form {
                 width: auto !important;
             }
+            /**/
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .modal-overlay.active {
+                display: flex;
+            }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .info-content-left {
+            display: flex;
+            align-items: center;
+            gap: 40px; /* Espaço entre o bloco do técnico e a data */
+            width: 100%;
+        }
+
+        /* Coluna da Direita (Status) */
+        .status-box-right {
+            flex-shrink: 0;
+        }
+
+        .appointment-main {
+            display: flex;
+            justify-content: space-between; /* Empurra o status para a direita */
+            align-items: center;
+            width: 100%;
+            padding: 10px 0;
+        }
+
     </style>
 </head>
 <body class="dashboard-body">
@@ -106,48 +152,56 @@
             {
                 <div class="appointment-card @(item.Status == "FINALIZADO" ? "done" : "")" data-status="@item.Status.ToLower()">
                     <div class="appointment-main">
-                        <div class="tech-brief">
-                            <img src="@item.TecnicoFoto" alt="@item.TecnicoNome" class="mini-avatar" />
+                        <div class="info-content-left">
+                            <div class="tech-brief">
+                                <img src="~/fotos_perfil/@item.TecnicoFoto" class="mini-avatar" />
+                            </div>
                             <div>
                                 <h4>@item.TecnicoNome</h4>
                                 <span>@item.TecnicoEspecialidade</span>
                             </div>
+
+                            <div class="date-info" style="margin-left: 10%">
+                                <p class="label">Data</p>       
+                                <p class="value">@item.DataAbertura.ToString("dd MMM • HH:mm")</p>
+                            </div>
+
                         </div>
-                        <div class="service-info">
-                            <p class="label">Serviço</p>
-                            <p class="value">@item.ServicoDescricao</p>
-                        </div>
-                        <div class="date-info">
-                            <p class="label">Data</p>
-                            <p class="value">@item.DataAbertura.ToString("dd MMM • HH:mm")</p>
-                        </div>
-                        <div class="status-box">
-                            @{
-                                string statusClass = item.Status switch
-                                {
-                                    "FINALIZADO" => "completed",
-                                    "CANCELADO" => "canceled",
-                                    "SOLICITADO" => "pending",
-                                    "PENDENTEAPROVACAO" => "pending-approval",
-                                    "APROVADO" => "progress",
-                                    _ => "pending"
-                                };
-                                string statusTexto = item.Status switch
-                                {
-                                    "FINALIZADO" => "Finalizado",
-                                    "CANCELADO" => "Cancelado",
-                                    "SOLICITADO" => "Solicitado",
-                                    "PENDENTEAPROVACAO" => "Pendente Aprovação",
-                                    "APROVADO" => "Aprovado",
-                                    _ => item.Status
-                                };
-                            }
-                            <span class="status-badge @statusClass">@statusTexto</span>
+                        <div class="status-box-right">
+                            <div class="status-box">
+                                @{
+                                    string statusClass = item.Status switch
+                                    {
+                                        "FINALIZADO" => "completed",
+                                        "CANCELADO" => "canceled",
+                                        "SOLICITADO" => "pending",
+                                        "PENDENTEAPROVACAO" => "pending-approval",
+                                        "APROVADO" => "progress",
+                                        _ => "pending"
+                                    };
+                                    string statusTexto = item.Status switch
+                                    {
+                                        "FINALIZADO" => "Finalizado",
+                                        "CANCELADO" => "Cancelado",
+                                        "SOLICITADO" => "Solicitado",
+                                        "PENDENTEAPROVACAO" => "Pendente Aprovação",
+                                        "APROVADO" => "Aprovado",
+                                        _ => item.Status
+                                    };
+                                }
+                                <span class="status-badge @statusClass">@statusTexto</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- INÍCIO DA LÓGICA REPLICADA DOS BOTÕES -->
                     <div class="appointment-actions">
+                        <!-- Botão Ver Detalhes (Sempre visível à esquerda) -->
+                        <button class="btn-outline btn-detalhes"
+                                data-id="@item.AtendimentoId"
+                                data-modelo="@item.Modelo"
+                                data-motivo="@item.ServicoDescricao">
+                            Ver Detalhes
+                        </button>
 
                         @if (item.Status == "SOLICITADO")
                         {
@@ -160,18 +214,16 @@
                         }
                         else if (item.Status == "PENDENTEAPROVACAO")
                         {
-
-                                <form asp-action="AprovarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
-                                    <button type="submit" class="btn-primary">Aprovar</button>
-                                </form>
-                                <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
-                                    <button type="submit" class="btn-outline-danger" onclick="return confirm('Deseja realmente cancelar?')">Recusar</button>
-                                </form>
+                            <form asp-action="AprovarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
+                                <button type="submit" class="btn-primary">Aprovar</button>
+                            </form>
+                            <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
+                                <button type="submit" class="btn-outline-danger" onclick="return confirm('Deseja realmente cancelar?')">Recusar</button>
+                            </form>
                         }
                         else if (item.Status == "APROVADO")
                         {
                             <button class="btn-outline btn-chat">Abrir Chat</button>
-                            <button class="btn-primary btn-detalhes" data-id="@item.AtendimentoId">Ver Detalhes</button>
                         }
                         else if (item.Status == "FINALIZADO")
                         {
@@ -187,6 +239,23 @@
                     <!-- FIM DA LÓGICA REPLICADA -->
                 </div>
             }
+        </div>
+
+        <!-- Estrutura do Modal de Detalhes -->
+        <div id="modal-detalhes" class="modal-overlay">
+            <div class="modal-content">
+                <h3>Detalhes do Aparelho</h3>
+                <hr>
+                <div class="info-group">
+                    <label><strong>Modelo:</strong></label>
+                    <p id="detalhe-modelo"></p>
+                </div>
+                <div class="info-group">
+                    <label><strong>Motivo do Chamado:</strong></label>
+                    <p id="detalhe-motivo"></p>
+                </div>
+                <button id="close-detalhes" class="btn-primary" style="margin-top: 20px;">Fechar</button>
+            </div>
         </div>
 
         <!-- Modais permanecem os mesmos -->
@@ -233,16 +302,43 @@
                 };
             });
 
-            // --- MODAL DE DETALHES ---
-            const modalDet = document.getElementById("modal-detalhes");
-            document.querySelectorAll(".btn-detalhes").forEach((btn) => {
-                btn.onclick = () => modalDet?.classList.add("active");
-            });
+        // --- MODAL DE DETALHES ---
+        const modalDet = document.getElementById("modal-detalhes");
+        const txtModelo = document.getElementById("detalhe-modelo");
+        const txtMotivo = document.getElementById("detalhe-motivo");
 
-            const closeDet = document.getElementById("close-detalhes");
-            if (closeDet) {
-                closeDet.onclick = () => modalDet?.classList.remove("active");
+        document.querySelectorAll(".btn-detalhes").forEach((btn) => {
+            btn.onclick = function() {
+                // 1. Captura os dados dos atributos data- do botão clicado
+                const modelo = this.getAttribute("data-modelo");
+                const motivo = this.getAttribute("data-motivo");
+
+                // 2. Injeta os textos nos elementos do modal
+                if (txtModelo) txtModelo.innerText = modelo || "Não informado";
+                if (txtMotivo) txtMotivo.innerText = motivo || "Não informado";
+
+                // 3. Abre o modal
+                modalDet?.classList.add("active");
+            };
+        });
+
+        const closeDet = document.getElementById("close-detalhes");
+        if (closeDet) {
+            closeDet.onclick = () => modalDet?.classList.remove("active");
+        }
+
+        // --- LÓGICA PARA FECHAR CLICANDO FORA (Para ambos os modais) ---
+        window.onclick = (event) => {
+            // Se o alvo do clique for a overlay (fundo escuro), fecha o modal
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove("active");
+
+                // Se for o modal de avaliação, opcionalmente reseta o form
+                if (event.target.id === "modal-avaliacao") {
+                    document.getElementById("form-avaliacao")?.reset();
+                }
             }
+        };
 
             // --- MODAL DE AVALIAÇÃO ---
             const modalEval = document.getElementById("modal-avaliacao");

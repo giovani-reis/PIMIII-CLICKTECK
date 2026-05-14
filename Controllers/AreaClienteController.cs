@@ -48,7 +48,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
                     // 1. Média de Avaliações (Trata nulos se não houver notas)
                     Avaliacao = _context.Avaliacoes
-                        .Where(a => a.TecnicoId == t.Id)
+                        .Where(a => a.TecnicoId == t.UsuarioId)
                         .Average(a => (double?)a.Nota) ?? 0.0,
 
                     // 2. Contagem de Reparos (Retorna 0 se não houver correspondência)
@@ -159,6 +159,37 @@ namespace PIMIII_CLICKTECK.Controllers
                 _context.SaveChanges();
                 TempData["MensagemSucesso"] = "Agendamento aprovado com sucesso.";
             }
+            return RedirectToAction("MeusAgendamentos");
+        }
+
+        [HttpPost]
+        public IActionResult AvaliarTecnico(int AtendimentoId, int Nota, string Comentario)
+        {
+            var atendimento = _context.Atendimentos.Find(AtendimentoId);
+            if (atendimento != null)
+            {
+                // 2. Cria o objeto de avaliação baseado no modelo que você enviou
+                var novaAvaliacao = new Avaliacao
+                {
+                    ClienteId = atendimento.ClienteId,
+                    TecnicoId = atendimento.TecnicoId,
+                    Nota = Nota,
+                    Comentario = Comentario
+                };
+
+                _context.Avaliacoes.Add(novaAvaliacao);
+
+                // 3. Opcional: Marcar que este atendimento já foi avaliado
+                // atendimento.Avaliado = true; 
+
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Obrigado por sua avaliação!";
+            }
+            else
+            {
+                TempData["Erro"] = "Atendimento não encontrado.";
+            }
+
             return RedirectToAction("MeusAgendamentos");
         }
         /*

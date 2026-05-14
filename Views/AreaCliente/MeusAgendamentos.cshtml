@@ -263,8 +263,42 @@
             </div>
         </div>
 
-        <!-- Modais permanecem os mesmos -->
-        <div id="modal-avaliacao" class="modal-overlay">...</div>
+        <!-- Modal de Avaliação -->
+        <div id="modal-avaliacao" class="modal-overlay">
+            <div class="modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Avaliar Técnico</h3>
+                    <span id="close-eval" style="cursor:pointer; font-size: 24px;">&times;</span>
+                </div>
+                <p style="margin-bottom: 15px; color: #666;">Como foi sua experiência com <strong id="eval-tech-name"></strong>?</p>
+
+                <form id="form-avaliacao" asp-action="AvaliarTecnico" method="post">
+                    <!-- Campo oculto para o ID do atendimento -->
+                    <input type="hidden" name="AtendimentoId" id="eval-atendimento-id" />
+
+                    <div class="info-group">
+                        <label>Sua Nota (1 a 5):</label>
+                        <select name="Nota" class="form-control" style="width: 100%; padding: 8px; border-radius: 6px;" required>
+                            <option value="5">⭐⭐⭐⭐⭐ - Excelente</option>
+                            <option value="4">⭐⭐⭐⭐ - Muito Bom</option>
+                            <option value="3">⭐⭐⭐ - Bom</option>
+                            <option value="2">⭐⭐ - Regular</option>
+                            <option value="1">⭐ - Ruim</option>
+                        </select>
+                    </div>
+
+                    <div class="info-group" style="margin-top: 15px;">
+                        <label>Comentário (Opcional):</label>
+                        <textarea name="Comentario" rows="3" class="form-control" style="width: 100%; padding: 8px; border-radius: 6px; resize: none;" placeholder="Conte-nos o que achou..."></textarea>
+                    </div>
+
+                    <div class="appointment-actions" style="margin-top: 20px; justify-content: flex-end;">
+                        <button type="button" id="cancel-eval" class="btn-outline">Cancelar</button>
+                        <button type="submit" class="btn-primary">Enviar Avaliação</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
@@ -315,43 +349,43 @@
                 };
             });
 
-        // --- MODAL DE DETALHES ---
-        const modalDet = document.getElementById("modal-detalhes");
-        const txtModelo = document.getElementById("detalhe-modelo");
-        const txtMotivo = document.getElementById("detalhe-motivo");
+            // --- MODAL DE DETALHES ---
+            const modalDet = document.getElementById("modal-detalhes");
+            const txtModelo = document.getElementById("detalhe-modelo");
+            const txtMotivo = document.getElementById("detalhe-motivo");
 
-        document.querySelectorAll(".btn-detalhes").forEach((btn) => {
-            btn.onclick = function() {
-                // 1. Captura os dados dos atributos data- do botão clicado
-                const modelo = this.getAttribute("data-modelo");
-                const motivo = this.getAttribute("data-motivo");
+            document.querySelectorAll(".btn-detalhes").forEach((btn) => {
+                btn.onclick = function() {
+                    // 1. Captura os dados dos atributos data- do botão clicado
+                    const modelo = this.getAttribute("data-modelo");
+                    const motivo = this.getAttribute("data-motivo");
 
-                // 2. Injeta os textos nos elementos do modal
-                if (txtModelo) txtModelo.innerText = modelo || "Não informado";
-                if (txtMotivo) txtMotivo.innerText = motivo || "Não informado";
+                    // 2. Injeta os textos nos elementos do modal
+                    if (txtModelo) txtModelo.innerText = modelo || "Não informado";
+                    if (txtMotivo) txtMotivo.innerText = motivo || "Não informado";
 
-                // 3. Abre o modal
-                modalDet?.classList.add("active");
-            };
-        });
+                    // 3. Abre o modal
+                    modalDet?.classList.add("active");
+                };
+            });
 
-        const closeDet = document.getElementById("close-detalhes");
-        if (closeDet) {
-            closeDet.onclick = () => modalDet?.classList.remove("active");
-        }
-
-        // --- LÓGICA PARA FECHAR CLICANDO FORA (Para ambos os modais) ---
-        window.onclick = (event) => {
-            // Se o alvo do clique for a overlay (fundo escuro), fecha o modal
-            if (event.target.classList.contains('modal-overlay')) {
-                event.target.classList.remove("active");
-
-                // Se for o modal de avaliação, opcionalmente reseta o form
-                if (event.target.id === "modal-avaliacao") {
-                    document.getElementById("form-avaliacao")?.reset();
-                }
+            const closeDet = document.getElementById("close-detalhes");
+            if (closeDet) {
+                closeDet.onclick = () => modalDet?.classList.remove("active");
             }
-        };
+
+            // --- LÓGICA PARA FECHAR CLICANDO FORA (Para ambos os modais) ---
+            window.onclick = (event) => {
+                // Se o alvo do clique for a overlay (fundo escuro), fecha o modal
+                if (event.target.classList.contains('modal-overlay')) {
+                    event.target.classList.remove("active");
+
+                    // Se for o modal de avaliação, opcionalmente reseta o form
+                    if (event.target.id === "modal-avaliacao") {
+                        document.getElementById("form-avaliacao")?.reset();
+                    }
+                }
+            };
 
             // --- MODAL DE AVALIAÇÃO ---
             const modalEval = document.getElementById("modal-avaliacao");
@@ -375,6 +409,22 @@
                 const el = document.getElementById(id);
                 if (el) el.onclick = fecharAvaliacao;
             });
+
+            document.querySelectorAll(".btn-avaliar").forEach((btn) => {
+                btn.onclick = function () {
+                    // Pega os dados do data-tech e data-id do botão
+                    const techName = this.getAttribute("data-tech");
+                    const atendimentoId = this.getAttribute("data-id");
+
+                    // Injeta no modal
+                    if (techNameSpan) techNameSpan.innerText = techName;
+                    if (inputAtendimentoId) inputAtendimentoId.value = atendimentoId;
+
+                    modalEval?.classList.add("active");
+                };
+            });
+
+
         });
     </script>
 </body>

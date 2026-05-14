@@ -1,105 +1,71 @@
-// FILTROS
-const filterBtns = document.querySelectorAll(".filter-btn");
-const cards = document.querySelectorAll(".appointment-card");
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Script TechTrust carregado e pronto."); // Se isso não aparecer, o caminho do arquivo no HTML está errado.
 
-filterBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterBtns.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    const filter = btn.getAttribute("data-filter");
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".appointment-card");
 
-    cards.forEach((card) => {
-      const isDone = card.classList.contains("done");
-      if (filter === "todos") card.style.display = "";
-      else if (filter === "em-aberto")
-        card.style.display = isDone ? "none" : "";
-      else if (filter === "concluidos")
-        card.style.display = isDone ? "" : "none";
+    // --- LÓGICA DE FILTROS ---
+    filterBtns.forEach((btn) => {
+        btn.onclick = function () {
+            // Estilo visual dos botões
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            this.classList.add("active");
+
+            const filter = this.getAttribute("data-filter").toLowerCase();
+
+            cards.forEach((card) => {
+                const cardStatus = card.getAttribute("data-status")?.toLowerCase() || "";
+
+                if (filter === "todos") {
+                    card.style.display = "flex";
+                }
+                else if (filter === "em-aberto") {
+                    const isAberto = cardStatus !== "finalizado" && cardStatus !== "cancelado";
+                    card.style.display = isAberto ? "flex" : "none";
+                }
+                else if (filter === "concluidos") {
+                    const isConcluido = cardStatus === "finalizado" || cardStatus === "cancelado";
+                    card.style.display = isConcluido ? "flex" : "none";
+                }
+                else {
+                    // Filtros específicos (solicitado, aprovado, etc)
+                    card.style.display = cardStatus === filter ? "flex" : "none";
+                }
+            });
+        };
     });
-  });
-});
 
-// MODAL DETALHES
-const modalDet = document.getElementById("modal-detalhes");
-document.querySelectorAll(".btn-detalhes").forEach((btn) => {
-  btn.onclick = () => modalDet.classList.add("active");
-});
-document.getElementById("close-detalhes").onclick = () =>
-  modalDet.classList.remove("active");
+    // --- MODAL DE DETALHES ---
+    const modalDet = document.getElementById("modal-detalhes");
+    document.querySelectorAll(".btn-detalhes").forEach((btn) => {
+        btn.onclick = () => modalDet?.classList.add("active");
+    });
 
-// CANCELAR
-document.querySelectorAll(".btn-outline-danger").forEach((btn) => {
-  btn.onclick = (e) => {
-    if (confirm("Deseja cancelar?")) {
-      const card = e.target.closest(".appointment-card");
-      card.style.opacity = "0";
-      setTimeout(() => card.remove(), 300);
-    }
-  };
-});
-
-const modalEval = document.getElementById("modal-avaliacao");
-const btnAvaliar = document.querySelectorAll(".btn-avaliar");
-const btnCloseEval = document.getElementById("close-eval");
-const btnCancelEval = document.getElementById("cancel-eval");
-const formAvaliacao = document.getElementById("form-avaliacao");
-
-btnAvaliar.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const techName = btn.getAttribute("data-tech");
-    document.getElementById("eval-tech-name").innerText = techName;
-    modalEval.classList.add("active");
-  });
-});
-
-const fecharAvaliacao = () => {
-  modalEval.classList.remove("active");
-  if (formAvaliacao) formAvaliacao.reset();
-};
-
-if (btnCloseEval) btnCloseEval.onclick = fecharAvaliacao;
-if (btnCancelEval) btnCancelEval.onclick = fecharAvaliacao;
-
-if (formAvaliacao) {
-  formAvaliacao.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const nota = document.querySelector('input[name="star"]:checked');
-
-    if (!nota) {
-      alert("Por favor, selecione uma quantidade de estrelas.");
-      return;
+    const closeDet = document.getElementById("close-detalhes");
+    if (closeDet) {
+        closeDet.onclick = () => modalDet?.classList.remove("active");
     }
 
-    alert(
-      `Obrigado! Sua avaliação de ${nota.value} estrelas foi enviada com sucesso.`,
-    );
-    fecharAvaliacao();
-  });
-}
+    // --- MODAL DE AVALIAÇÃO ---
+    const modalEval = document.getElementById("modal-avaliacao");
+    const inputAtendimentoId = document.getElementById("eval-atendimento-id");
+    const techNameSpan = document.getElementById("eval-tech-name");
 
-document.querySelectorAll('.btn-avaliar').forEach(btn => {
-    btn.addEventListener('click', function () {
-        document.getElementById('eval-tech-name').innerText = this.dataset.tech;
-        document.getElementById('eval-atendimento-id').value = this.dataset.id;
-        document.getElementById('modal-avaliacao').classList.add('active');
+    document.querySelectorAll(".btn-avaliar").forEach((btn) => {
+        btn.onclick = function () {
+            if (techNameSpan) techNameSpan.innerText = this.getAttribute("data-tech");
+            if (inputAtendimentoId) inputAtendimentoId.value = this.getAttribute("data-id");
+            modalEval?.classList.add("active");
+        };
     });
-});
 
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Remove a classe ativa dos outros botões
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
+    const fecharAvaliacao = () => {
+        modalEval?.classList.remove("active");
+        document.getElementById("form-avaliacao")?.reset();
+    };
 
-        const filterValue = this.getAttribute('data-filter');
-
-        // Filtra os cards baseados no data-status
-        document.querySelectorAll('.appointment-card').forEach(card => {
-            if (filterValue === 'todos' || card.getAttribute('data-status') === filterValue) {
-                card.style.display = 'flex'; // ou 'block', dependendo do seu CSS original
-            } else {
-                card.style.display = 'none';
-            }
-        });
+    ["close-eval", "cancel-eval"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.onclick = fecharAvaliacao;
     });
 });

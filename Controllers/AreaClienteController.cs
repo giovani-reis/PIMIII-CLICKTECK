@@ -153,7 +153,7 @@ namespace PIMIII_CLICKTECK.Controllers
         public IActionResult AprovarAtendimento(int id)
         {
             var atendimento = _context.Atendimentos.Find(id);
-            if (atendimento != null && atendimento.Status == StatusAtendimento.Aprovado)
+            if (atendimento != null)
             {
                 atendimento.Status = StatusAtendimento.Aprovado;
                 _context.SaveChanges();

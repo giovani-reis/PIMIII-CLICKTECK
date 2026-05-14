@@ -146,7 +146,12 @@
                 <button class="filter-btn" data-filter="finalizado">Finalizado</button>
             </div>
         </header>
-
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px;">
+                @TempData["MensagemSucesso"]
+            </div>
+        }
         <div class="appointments-list">
             @foreach (var item in Model)
             {
@@ -260,7 +265,6 @@
 
         <!-- Modais permanecem os mesmos -->
         <div id="modal-avaliacao" class="modal-overlay">...</div>
-        <div id="modal-detalhes" class="modal-overlay">...</div>
     </main>
 
     <script src="~/scripts/agendamentos.js" asp-append-version="true"></script>

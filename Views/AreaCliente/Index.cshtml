@@ -232,12 +232,7 @@
                 <button class="filter-btn" data-filter="tvs">TVs & Outros</button>
             </div>
         </header>
-        @if (TempData["MensagemSucesso"] != null)
-        {
-            <div class="alert-success" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                @TempData["MensagemSucesso"]
-            </div>
-        }
+
         <div class="tech-grid" id="tech-grid">
 
             @foreach (var tecnico in Model.Tecnico)

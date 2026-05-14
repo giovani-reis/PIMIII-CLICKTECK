@@ -80,7 +80,7 @@ namespace PIMIII_CLICKTECK.Controllers
             // 1. Forçamos os dados que o usuário não preenche manualmente
             atendimento.DataAbertura = DateTime.Now;
             atendimento.Status = StatusAtendimento.Solicitado;
-            
+
             // 2. Salva no banco
             _context.Atendimentos.Add(atendimento);
             _context.SaveChanges();
@@ -89,7 +89,7 @@ namespace PIMIII_CLICKTECK.Controllers
             TempData["MensagemSucesso"] = "Solicitação de reparo enviada com sucesso!";
 
             // 4. Redireciona de volta para a vitrine de técnicos
-            return RedirectToAction("Index");
+            return RedirectToAction("MeusAgendamentos", "AreaCliente");
         }
 
         // Action para carregar a página de listagem
@@ -125,7 +125,8 @@ namespace PIMIII_CLICKTECK.Controllers
                                             .Select(te => te.Especialidade.Nome)
                                             .FirstOrDefault() ?? "Técnico Especialista",
 
-                    ServicoDescricao = $"{a.Aparelho} - {a.Descricao}",
+                    Modelo = a.Aparelho,
+                    ServicoDescricao = a.Descricao,
                     DataAbertura = a.DataAbertura,
                     Status = a.Status.ToString().ToUpper() // Usamos ToUpper para facilitar o switch no HTML
                 })
@@ -148,6 +149,18 @@ namespace PIMIII_CLICKTECK.Controllers
             return RedirectToAction("MeusAgendamentos");
         }
 
+        [HttpPost]
+        public IActionResult AprovarAtendimento(int id)
+        {
+            var atendimento = _context.Atendimentos.Find(id);
+            if (atendimento != null && atendimento.Status == StatusAtendimento.Aprovado)
+            {
+                atendimento.Status = StatusAtendimento.Aprovado;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Agendamento aprovado com sucesso.";
+            }
+            return RedirectToAction("MeusAgendamentos");
+        }
         /*
 
         // GET: AreaCliente

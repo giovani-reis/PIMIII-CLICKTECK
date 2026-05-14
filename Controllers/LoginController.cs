@@ -55,5 +55,15 @@ namespace PIMIII_CLICKTECK.Controllers
             ViewBag.Senha = senha;
             return View();
          }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Sair()
+        {
+            TempData["Usu"] = null;
+
+            return RedirectToAction("Index", "Login");
+        }
+
      }
 }

@@ -1,0 +1,165 @@
+﻿@model PIMIII_CLICKTECK.Models.ViewModels.DashboardTecnicoViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechTrust | Dashboard Técnico</title>
+    <link href="~/estilos/dashboard-tecnico.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+
+    <!-- NAVBAR -->
+    <nav class="dash-navbar">
+        <div class="dash-nav-container">
+            <div class="logo">
+                <div class="logo-icon">CT</div>
+                <span class="logo-text">Click<span>Tech</span></span>
+            </div>
+
+            <div class="user-menu">
+                <div class="notification-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    @if (Model.AtendimentosPendentes.Count > 0)
+                    {
+                        <span class="badge-dot"></span>
+                    }
+                </div>
+
+                <div class="user-profile">
+                    <img src="~/fotos_perfil/@Model.Tecnico.TecnicoPerfil.FotoUrl" alt="Perfil">
+                    <span>@Model.Tecnico.Nome</span>
+
+                    <!-- DROPDOWN (Funciona com o hover do seu CSS) -->
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">Minha Conta</div>
+                        <a href="#" class="dropdown-item">Meu Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <form asp-controller="Login" asp-action="Sair" method="post">
+                            <button type="submit" class="btn-logoff">Sair</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="dash-main">
+        <header class="dash-header">
+            <h1>Visão Geral</h1>
+            <p>Olá, @Model.Tecnico.Nome. Bem-vindo de volta.</p>
+        </header>
+
+        <!-- ESTATÍSTICAS -->
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">💰</div>
+                    <div class="stat-card-title">Ganhos Totais</div>
+                </div>
+                <div class="stat-card-body">
+                    <div class="stat-card-value">@Model.GanhosTotais.ToString("C")</div>
+                    <div class="stat-card-desc">Saldo acumulado este mês</div>
+                </div>
+            </div>
+
+            <div class="stat-card green">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">🛠️</div>
+                    <div class="stat-card-title">Reparos Concluídos</div>
+                </div>
+                <div class="stat-card-body">
+                    <div class="stat-card-value">@Model.TotalReparos</div>
+                    <div class="stat-card-desc">Serviços entregues</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTA DE SERVIÇOS -->
+        <h2 class="section-title">Novas Solicitações</h2>
+        <div class="services-grid">
+            @if (Model.AtendimentosPendentes.Any())
+            {
+                foreach (var item in Model.AtendimentosPendentes)
+                {
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="client-info">
+                                <h3>@item.Cliente.Nome</h3>
+                                <p>Cliente ClickTech</p>
+                            </div>
+                            <div class="service-date">Hoje</div>
+                        </div>
+                        <div class="service-details">
+                            <strong>Aparelho: @item.Aparelho</strong>
+                            <p>@item.Descricao</p>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn-success" onclick="abrirModal('@item.Id', '@item.Aparelho')">Aceitar e Orçar</button>
+                            <button class="btn-outline">Recusar</button>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state" style="display: flex;">
+                    <h3>Nenhum serviço pendente</h3>
+                    <p>Tudo em dia por aqui!</p>
+                </div>
+            }
+        </div>
+    </main>
+
+    <!-- MODAL (Fiel ao seu .modal-overlay e .modal-content) -->
+    <div id="modalOrcamento" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="fecharModal()">&times;</button>
+            <h2 style="margin-bottom: 10px;">Enviar Orçamento</h2>
+            <p id="txtAparelho" style="color: var(--text-light); margin-bottom: 20px;"></p>
+
+            <form asp-action="EnviarOrcamento" method="post">
+                <input type="hidden" name="AtendimentoId" id="atendimentoId">
+
+                <div class="modal-form-group">
+                    <label>Valor Estimado (R$)</label>
+                    <input type="number" name="Valor" step="0.01" placeholder="Ex: 150,00" required>
+                </div>
+
+                <div class="modal-form-group">
+                    <label>Observações e Peças</label>
+                    <textarea name="Observacao" rows="4" placeholder="Descreva o defeito e a solução..." required></textarea>
+                </div>
+
+                <div class="service-actions">
+                    <button type="submit" class="btn-primary">Enviar Proposta ao Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function abrirModal(id, aparelho) {
+            document.getElementById('atendimentoId').value = id;
+            document.getElementById('txtAparelho').innerText = "Aparelho: " + aparelho;
+            document.querySelector('.modal-overlay').classList.add('active');
+        }
+
+        function fecharModal() {
+            document.querySelector('.modal-overlay').classList.remove('active');
+        }
+
+        // Fechar ao clicar fora do conteúdo branco
+        window.onclick = function(event) {
+            let modal = document.getElementById('modalOrcamento');
+            if (event.target == modal) fecharModal();
+        }
+    </script>
+</body>
+</html>

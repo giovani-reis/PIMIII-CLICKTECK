@@ -204,7 +204,9 @@
                         <button class="btn-outline btn-detalhes"
                                 data-id="@item.AtendimentoId"
                                 data-modelo="@item.Modelo"
-                                data-motivo="@item.ServicoDescricao">
+                                data-motivo="@item.ServicoDescricao"
+                                data-valor="@(item.ValorOrcamento > 0 ? ((decimal)item.ValorOrcamento).ToString("C2") : "")"
+                                data-observacao="@item.ObservacaoTecnico">
                             Ver Detalhes
                         </button>
 
@@ -259,6 +261,17 @@
                     <label><strong>Motivo do Chamado:</strong></label>
                     <p id="detalhe-motivo"></p>
                 </div>
+
+                <!-- NOVOS CAMPOS ABAIXO -->
+                <div class="info-group">
+                    <label><strong>Valor do Orçamento:</strong></label>
+                    <p id="detalhe-valor"></p>
+                </div>
+                <div class="info-group">
+                    <label><strong>Observação do Técnico:</strong></label>
+                    <p id="detalhe-observacao" style="white-space: pre-wrap;"></p>
+                </div>
+
                 <button id="close-detalhes" class="btn-primary" style="margin-top: 20px;">Fechar</button>
             </div>
         </div>
@@ -354,18 +367,40 @@
             const txtModelo = document.getElementById("detalhe-modelo");
             const txtMotivo = document.getElementById("detalhe-motivo");
 
+            // Localize esta parte no seu <script> e atualize:
             document.querySelectorAll(".btn-detalhes").forEach((btn) => {
                 btn.onclick = function() {
-                    // 1. Captura os dados dos atributos data- do botão clicado
+                    // 1. Captura os dados
                     const modelo = this.getAttribute("data-modelo");
                     const motivo = this.getAttribute("data-motivo");
+                    const valor = this.getAttribute("data-valor");
+                    const observacao = this.getAttribute("data-observacao");
 
-                    // 2. Injeta os textos nos elementos do modal
+                    // 2. Elementos do modal
+                    const txtModelo = document.getElementById("detalhe-modelo");
+                    const txtMotivo = document.getElementById("detalhe-motivo");
+                    const txtValor = document.getElementById("detalhe-valor");
+                    const txtObs = document.getElementById("detalhe-observacao");
+
+                    // 3. Injeta os textos com a lógica de verificação
                     if (txtModelo) txtModelo.innerText = modelo || "Não informado";
                     if (txtMotivo) txtMotivo.innerText = motivo || "Não informado";
 
-                    // 3. Abre o modal
-                    modalDet?.classList.add("active");
+                    // Lógica para Valor
+                    if (txtValor) {
+                        txtValor.innerText = (valor && valor.trim() !== "") ? valor : "Ainda não atribuído";
+                        txtValor.style.color = (valor && valor.trim() !== "") ? "#10b981" : "#1e293b"; // Verde se tiver valor, cinza se não
+                    }
+
+                    // Lógica para Observação
+                    if (txtObs) {
+                        txtObs.innerText = (observacao && observacao.trim() !== "null" && observacao.trim() !== "")
+                                           ? observacao
+                                           : "Ainda não atribuído";
+                    }
+
+                    // 4. Abre o modal
+                    document.getElementById("modal-detalhes")?.classList.add("active");
                 };
             });
 

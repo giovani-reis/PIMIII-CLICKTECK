@@ -8,6 +8,8 @@
         public string TecnicoFoto { get; set; }
         public string Modelo { get; set; }
         public string ServicoDescricao { get; set; }
+        public decimal? ValorOrcamento { get; set; }
+        public string? ObservacaoTecnico { get; set; }
         public DateTime DataAbertura { get; set; }
         public string Status { get; set; }
     }

@@ -127,6 +127,8 @@ namespace PIMIII_CLICKTECK.Controllers
 
                     Modelo = a.Aparelho,
                     ServicoDescricao = a.Descricao,
+                    ValorOrcamento = a.ValorOrcamento,
+                    ObservacaoTecnico = a.ObservacaoTecnico,
                     DataAbertura = a.DataAbertura,
                     Status = a.Status.ToString().ToUpper() // Usamos ToUpper para facilitar o switch no HTML
                 })

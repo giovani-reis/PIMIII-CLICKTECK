@@ -58,25 +58,54 @@
 
         <!-- ESTATÍSTICAS -->
         <div class="stats-grid">
+            <!-- Card 1: Ganhos -->
             <div class="stat-card blue">
                 <div class="stat-card-header">
-                    <div class="stat-card-icon">💰</div>
+                    <div class="stat-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
                     <div class="stat-card-title">Ganhos Totais</div>
                 </div>
                 <div class="stat-card-body">
-                    <div class="stat-card-value">@Model.GanhosTotais.ToString("C")</div>
-                    <div class="stat-card-desc">Saldo acumulado este mês</div>
+                    <div class="stat-card-value">@Model.GanhosTotais.ToString("C2")</div>
+                    <div class="stat-card-desc">De @Model.TotalReparosConcluidos reparos concluídos</div>
                 </div>
             </div>
 
+            <!-- Card 2: Pendentes -->
             <div class="stat-card green">
                 <div class="stat-card-header">
-                    <div class="stat-card-icon">🛠️</div>
-                    <div class="stat-card-title">Reparos Concluídos</div>
+                    <div class="stat-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-card-title">Serviços Pendentes</div>
                 </div>
                 <div class="stat-card-body">
-                    <div class="stat-card-value">@Model.TotalReparos</div>
-                    <div class="stat-card-desc">Serviços entregues</div>
+                    <div class="stat-card-value" id="pending-count">@Model.AtendimentosPendentes.Count</div>
+                    <div class="stat-card-desc">Aguardando sua confirmação</div>
+                </div>
+            </div>
+
+            <!-- Card 3: Avaliação -->
+            <div class="stat-card yellow">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-card-title">Avaliação Média</div>
+                </div>
+                <div class="stat-card-body">
+                    <div class="stat-card-value">@Model.AvaliacaoMedia.ToString("F1")</div>
+                    <div class="stat-card-desc">De @Model.TotalAvaliacoes avaliações</div>
                 </div>
             </div>
         </div>

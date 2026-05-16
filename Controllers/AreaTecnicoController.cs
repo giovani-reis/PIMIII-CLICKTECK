@@ -26,18 +26,42 @@ namespace PIMIII_CLICKTECK.Controllers
             TempData.Keep("Tecnico");
 
             int idUsuario = (int)usuLogado;
-            // Busca o usuário, o perfil dele e os serviços pendentes
+
+            // 1. Busca o técnico logado
             var tecnicoLogado = _context.Usuarios
                 .Include(u => u.TecnicoPerfil)
-                .FirstOrDefault(u => u.Id == idUsuario); // ID do técnico logado
+                .FirstOrDefault(u => u.Id == idUsuario);
 
+            // 2. Cálculos para o Card 1 (Ganhos e Reparos Concluídos)
+            var ganhosTotais = _context.Atendimentos
+                .Where(a => a.TecnicoId == idUsuario && a.Status == StatusAtendimento.Finalizado)
+                .Sum(a => a.ValorOrcamento) ?? 0;
+
+            var totalReparos = _context.Atendimentos
+                .Count(a => a.TecnicoId == idUsuario && a.Status == StatusAtendimento.Finalizado);
+
+            // 3. Cálculos para o Card 3 (Média de Avaliações)
+            // OBS: Ajuste '_context.Avaliacoes' para o nome da sua tabela/entidade de notas (se houver)
+            var avaliacaoMedia = _context.Avaliacoes
+                .Where(av => av.TecnicoId == idUsuario)
+                .Average(av => (decimal?)av.Nota) ?? 0;
+
+            var totalAvaliacoes = _context.Avaliacoes
+                .Count(av => av.TecnicoId == idUsuario);
+
+            // 4. Monta a ViewModel com todos os dados
             var model = new DashboardTecnicoViewModel
             {
                 Tecnico = tecnicoLogado,
                 AtendimentosPendentes = _context.Atendimentos
                     .Include(a => a.Cliente)
                     .Where(a => a.Status == StatusAtendimento.Solicitado && a.TecnicoId == idUsuario)
-                    .ToList()
+                    .ToList(),
+
+                GanhosTotais = ganhosTotais,
+                TotalReparosConcluidos = totalReparos,
+                AvaliacaoMedia = avaliacaoMedia,
+                TotalAvaliacoes = totalAvaliacoes
             };
 
             return View(model);

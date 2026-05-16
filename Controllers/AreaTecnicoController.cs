@@ -36,7 +36,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 Tecnico = tecnicoLogado,
                 AtendimentosPendentes = _context.Atendimentos
                     .Include(a => a.Cliente)
-                    .Where(a => a.Status == StatusAtendimento.Solicitado)
+                    .Where(a => a.Status == StatusAtendimento.Solicitado && a.TecnicoId == idUsuario)
                     .ToList()
             };
 

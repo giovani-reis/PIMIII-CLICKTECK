@@ -140,7 +140,7 @@ namespace PIMIII_CLICKTECK.Controllers
         public IActionResult CancelarAtendimento(int id)
         {
             var atendimento = _context.Atendimentos.Find(id);
-            if (atendimento != null && atendimento.Status == StatusAtendimento.Solicitado)
+            if (atendimento != null)
             {
                 atendimento.Status = StatusAtendimento.Cancelado;
                 _context.SaveChanges();

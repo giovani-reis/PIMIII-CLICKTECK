@@ -160,7 +160,12 @@
                         </div>
                         <div class="service-actions">
                             <button class="btn-success" onclick="abrirModal('@item.Id', '@item.Aparelho')">Aceitar e Orçar</button>
-                            <button class="btn-outline">Recusar</button>
+                            <form asp-action="CancelarAtendimento" method="post" style="flex: 1; display: inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn-outline" style="width: 100%;" onclick="return confirm('Tem certeza que deseja recusar este atendimento?')">
+                                    Recusar
+                                </button>
+                            </form>
                         </div>
                     </div>
                 }

@@ -81,5 +81,18 @@ namespace PIMIII_CLICKTECK.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult CancelarAtendimento(int id)
+        {
+            var atendimento = _context.Atendimentos.Find(id);
+            if (atendimento != null)
+            {
+                atendimento.Status = StatusAtendimento.Cancelado;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Agendamento cancelado com sucesso.";
+            }
+            return View();
+        }
+
     }
 }

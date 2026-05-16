@@ -152,7 +152,18 @@
                                 <h3>@item.Cliente.Nome</h3>
                                 <p>Cliente ClickTech</p>
                             </div>
-                            <div class="service-date">Hoje</div>
+                            @if (item.DataAbertura.Date == DateTime.Today)
+                            {
+                                <div class="service-date">Hoje<br />@item.DataAbertura.ToString("HH:mm")</div>
+
+                            } else if (item.DataAbertura.Date == DateTime.Today.AddDays(-1))
+                            {
+                                <div class="service-date">Ontem</div>
+                            }
+                            else
+                            {
+                                <div class="service-date">@item.DataAbertura.ToString("dd/MM • HH/mm")</div>
+                            }
                         </div>
                         <div class="service-details">
                             <strong>Aparelho: @item.Aparelho</strong>

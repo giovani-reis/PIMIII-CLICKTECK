@@ -92,6 +92,10 @@ namespace PIMIII_CLICKTECK.Controllers
             return RedirectToAction("MeusAgendamentos", "AreaCliente");
         }
 
+
+
+
+
         // Action para carregar a página de listagem
         public IActionResult MeusAgendamentos()
         {

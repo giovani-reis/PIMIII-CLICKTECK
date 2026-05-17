@@ -16,6 +16,8 @@ namespace PIMIII_CLICKTECK.Controllers
         {
             _context = context;
         }
+
+
         public IActionResult Index()
         {
             var usuLogado = TempData["Tecnico"];
@@ -92,6 +94,60 @@ namespace PIMIII_CLICKTECK.Controllers
                 TempData["MensagemSucesso"] = "Agendamento cancelado com sucesso.";
             }
             return View();
+        }
+
+
+
+        [HttpGet]
+        public IActionResult MeusServicos()
+        {
+            var usuLogado = TempData["Tecnico"];
+            if (usuLogado == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            TempData.Keep("Tecnico"); // Mantém a sessão ativa
+
+            int idUsuario = (int)usuLogado;
+
+            // Busca apenas os serviços que já passaram da fase de "Solicitado" ou "Cancelado"
+            var servicos = _context.Atendimentos
+                .Include(a => a.Cliente)
+                .Where(a => a.TecnicoId == idUsuario &&
+                            (a.Status == StatusAtendimento.PendenteAprovacao ||
+                             a.Status == StatusAtendimento.Aprovado ||
+                             a.Status == StatusAtendimento.Finalizado))
+                .OrderByDescending(a => a.DataAbertura)
+                .Select(a => new MeusAgendamentosTecnicoViewModel
+                {
+                    AtendimentoId = a.Id,
+                    ClienteNome = a.Cliente.Nome,
+                    Aparelho = a.Aparelho,
+                    Descricao = a.Descricao,
+                    ValorOrcamento = a.ValorOrcamento,
+                    DataAbertura = a.DataAbertura,
+                    DataConclusao = a.DataConclusao,
+                    Status = a.Status.ToString().ToUpper()
+                })
+                .ToList();
+
+            return View(servicos);
+        }
+
+        // Action para processar a finalização do serviço pelo Técnico
+        [HttpPost]
+        public IActionResult FinalizarServico(int atendimentoId)
+        {
+            var atendimento = _context.Atendimentos.Find(atendimentoId);
+            if (atendimento != null && atendimento.Status == StatusAtendimento.Aprovado)
+            {
+                atendimento.Status = StatusAtendimento.Finalizado;
+                atendimento.DataConclusao = DateTime.Now;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Reparo finalizado com sucesso!";
+            }
+
+            return RedirectToAction("MeusServicos");
         }
 
     }

@@ -116,7 +116,8 @@ namespace PIMIII_CLICKTECK.Controllers
                 .Where(a => a.TecnicoId == idUsuario &&
                             (a.Status == StatusAtendimento.PendenteAprovacao ||
                              a.Status == StatusAtendimento.Aprovado ||
-                             a.Status == StatusAtendimento.Finalizado))
+                             a.Status == StatusAtendimento.Finalizado ||
+                             a.Status == StatusAtendimento.Cancelado))
                 .OrderByDescending(a => a.DataAbertura)
                 .Select(a => new MeusAgendamentosTecnicoViewModel
                 {

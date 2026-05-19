@@ -47,9 +47,11 @@
             </div>
 
             <div class="status-filters">
+                <button class="filter-btn" data-filter="todos">Todos</button>
                 <button class="filter-btn active" data-filter="aprovado">Em Andamento</button>
-                <button class="filter-btn" data-filter="pendenteaprovacao">Agendados</button>
+                <button class="filter-btn" data-filter="pendenteaprovacao">Pendentes</button>
                 <button class="filter-btn" data-filter="finalizado">Concluídos</button>
+                <button class="filter-btn" data-filter="cancelado">Cancelados</button>
             </div>
         </div>
 
@@ -62,7 +64,7 @@
 
         <div class="services-grid" id="accepted-services-grid">
 
-            @foreach (var servico in Model)
+            @foreach (var servico   in Model)
             {
                 <div class="service-card" data-status="@servico.Status.ToLower()">
                     <div class="service-header">
@@ -71,23 +73,31 @@
 
                             @if (servico.Status == "APROVADO")
                             {
+                                <span class="status-badge status-in-progress">#@servico.AtendimentoId</span>
                                 <span class="status-badge status-in-progress">Em Andamento</span>
                             }
                             else if (servico.Status == "PENDENTEAPROVACAO")
                             {
+                                <span class="status-badge status-scheduled">#@servico.AtendimentoId</span>
                                 <span class="status-badge status-scheduled">Aguardando Cliente</span>
                             }
                             else if (servico.Status == "FINALIZADO")
                             {
+                                <span class="status-badge status-completed">#@servico.AtendimentoId</span>
                                 <span class="status-badge status-completed">Concluído</span>
+                            }
+                            else if (servico.Status == "CANCELADO")
+                            {
+                                <span class="status-badge status-completed">#@servico.AtendimentoId</span>
+                                <span class="status-badge status-completed">Cancelado</span>
                             }
                         </div>
                         <div class="service-date">
-                            Abertura:<br>@servico.DataAbertura.ToString("dd/MM/yyyy HH:mm")
+                            Abertura:<br>@servico.DataAbertura.ToString("dd/MM/yyyy")<br />@servico.DataAbertura.ToString("HH:mm")
                             @if (servico.DataConclusao.HasValue)
                             {
                                 <br>
-                        
+
                                 <span style="color:var(--success-green); margin-top:5px; display:block;">Fechamento:<br>@servico.DataConclusao.Value.ToString("dd/MM/yyyy")</span>
                             }
                         </div>
@@ -195,7 +205,7 @@
                 let countVisible = 0;
 
                 cards.forEach(card => {
-                    if (card.getAttribute("data-status") === filterValue) {
+                    if (filterValue === "todos" || card.getAttribute("data-status") === filterValue) {
                         card.style.display = "block";
                         countVisible++;
                     } else {
@@ -218,6 +228,7 @@
             filterBtns.forEach(btn => {
                 btn.addEventListener("click", function() {
                     filterBtns.forEach(b => b.classList.remove("active"));
+
                     this.classList.add("active");
 
                     const filter = this.getAttribute("data-filter");

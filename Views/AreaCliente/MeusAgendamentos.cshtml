@@ -215,38 +215,47 @@
                                 data-observacao="@item.ObservacaoTecnico">
                             Ver Detalhes
                         </button>
+                        @switch (item.Status)
+                        {
+                            case "SOLICITADO":
+                                <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
+                                    <button type="submit" class="btn-outline-danger" onclick="return confirm('Tem certeza que deseja cancelar?')">
+                                        Cancelar
+                                    </button>
+                                </form>
+                                break;
+                            case "PENDENTEAPROVACAO":
+                                <form asp-action="AprovarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
+                                    <button type="submit" class="btn-primary">Aprovar</button>
+                                </form>
+                                <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
+                                    <button type="submit" class="btn-outline-danger" onclick="return confirm('Deseja realmente cancelar?')">Recusar</button>
+                                </form>
+                                break;
+                            case "APROVADO":
+                                <button class="btn-outline btn-chat">Abrir Chat</button>
 
-                        @if (item.Status == "SOLICITADO")
-                        {
-                            <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
-                                <button type="submit" class="btn-outline-danger" onclick="return confirm('Tem certeza que deseja cancelar?')">
-                                    Cancelar
-                                </button>
-                            </form>
+                                break;
+                            case "FINALIZADO":
+                                if (item.JaAvaliado)
+                                {                                    
+                                    <button class="btn-disabled btn-avaliar">
+                                        Avaliar Técnico
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn-primary btn-avaliar" data-tech="@item.TecnicoNome" data-id="@item.AtendimentoId">
+                                        Avaliar Técnico
+                                    </button>
+                                }
+                                break;
+
+                            case "CANCELADO":
+                                <button class="btn-disabled" disabled>Atendimento Cancelado</button>
+                                break;
                         }
-                        else if (item.Status == "PENDENTEAPROVACAO")
-                        {
-                            <form asp-action="AprovarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
-                                <button type="submit" class="btn-primary">Aprovar</button>
-                            </form>
-                            <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
-                                <button type="submit" class="btn-outline-danger" onclick="return confirm('Deseja realmente cancelar?')">Recusar</button>
-                            </form>
-                        }
-                        else if (item.Status == "APROVADO")
-                        {
-                            <button class="btn-outline btn-chat">Abrir Chat</button>
-                        }
-                        else if (item.Status == "FINALIZADO")
-                        {
-                            <button class="btn-primary btn-avaliar" data-tech="@item.TecnicoNome" data-id="@item.AtendimentoId">
-                                Avaliar Técnico
-                            </button>
-                        }
-                        else if (item.Status == "CANCELADO")
-                        {
-                            <button class="btn-disabled" disabled>Atendimento Cancelado</button>
-                        }
+                        
                     </div>
                     <!-- FIM DA LÓGICA REPLICADA -->
                 </div>

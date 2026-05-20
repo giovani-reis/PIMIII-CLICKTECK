@@ -218,7 +218,6 @@
 
                         @if (item.Status == "SOLICITADO")
                         {
-                            <button class="btn-outline btn-chat">Abrir Chat</button>
                             <form asp-action="CancelarAtendimento" asp-route-id="@item.AtendimentoId" method="post">
                                 <button type="submit" class="btn-outline-danger" onclick="return confirm('Tem certeza que deseja cancelar?')">
                                     Cancelar

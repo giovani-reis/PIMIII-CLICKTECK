@@ -43,7 +43,7 @@ namespace PIMIII_CLICKTECK.Controllers
                     Id = t.Id,
                     IdTecnico = t.UsuarioId,
                     Nome = t.Usuario.Nome,
-                    FotoUrl = t.FotoUrl ?? "/img/default-avatar.jpg",
+                    FotoUrl = t.FotoUrl ?? "default-avatar.jpg",
                     Descricao = t.Descricao,
 
                     // 1. Média de Avaliações (Trata nulos se não houver notas)

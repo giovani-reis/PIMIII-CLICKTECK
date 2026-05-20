@@ -23,7 +23,7 @@ namespace PIMIII_CLICKTECK.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var usuLogado = TempData["Usu"];
             if (usuLogado == null)
@@ -35,7 +35,7 @@ namespace PIMIII_CLICKTECK.Controllers
             int idUsuario = (int)usuLogado;
 
 
-            var tecnicos = _context.TecnicoPerfis
+            var tecnicos = await _context.TecnicoPerfis
                 .Include(t => t.Usuario)
                 .Where(t => t.Disponivel)
                 .Select(t => new DashBoardViewModel
@@ -60,7 +60,7 @@ namespace PIMIII_CLICKTECK.Controllers
                         .Where(te => te.TecnicoPerfilId == t.Id)
                         .Select(te => te.Especialidade.Nome) // Nome vem da tabela ESPECIALIDADES
                         .ToList()
-                }).ToList();
+                }).ToListAsync();
 
             var telaUsuario = new TelaUsuarioViewModel
             {
@@ -72,7 +72,7 @@ namespace PIMIII_CLICKTECK.Controllers
         }
 
         [HttpPost]
-        public IActionResult CriarAtendimento(Atendimento atendimento)
+        public async Task<IActionResult> CriarAtendimento(Atendimento atendimento)
         {
             TempData.Keep("Usu");
             // O Entity Framework preenche o objeto 'atendimento' com os nomes dos inputs do seu Modal
@@ -82,8 +82,8 @@ namespace PIMIII_CLICKTECK.Controllers
             atendimento.Status = StatusAtendimento.Solicitado;
 
             // 2. Salva no banco
-            _context.Atendimentos.Add(atendimento);
-            _context.SaveChanges();
+            await _context.Atendimentos.AddAsync(atendimento);
+            await _context.SaveChangesAsync();
 
             // 3. Cria uma mensagem para exibir na volta
             TempData["MensagemSucesso"] = "Solicitação de reparo enviada com sucesso!";
@@ -97,7 +97,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
 
         // Action para carregar a página de listagem
-        public IActionResult MeusAgendamentos()
+        public async Task<IActionResult> MeusAgendamentos()
         {
             var usuLogado = TempData["Usu"];
             if (usuLogado == null)
@@ -109,7 +109,7 @@ namespace PIMIII_CLICKTECK.Controllers
             int idUsuario = (int)usuLogado;
 
             // Buscamos os atendimentos e transformamos para a ViewModel que criamos
-            var agendamentos = _context.Atendimentos
+            var agendamentos = await _context.Atendimentos
                 .Include(a => a.Tecnico) // Traz os dados do usuário técnico
                 .Where(a => a.ClienteId == idUsuario)
                 .OrderByDescending(a => a.DataAbertura)
@@ -136,40 +136,40 @@ namespace PIMIII_CLICKTECK.Controllers
                     DataAbertura = a.DataAbertura,
                     Status = a.Status.ToString().ToUpper() // Usamos ToUpper para facilitar o switch no HTML
                 })
-                .ToList();
+                .ToListAsync();
 
             return View(agendamentos);
         }
 
         // Action para processar o cancelamento pelo cliente
         [HttpPost]
-        public IActionResult CancelarAtendimento(int id)
+        public async Task<IActionResult> CancelarAtendimento(int id)
         {
             var atendimento = _context.Atendimentos.Find(id);
             if (atendimento != null)
             {
                 atendimento.Status = StatusAtendimento.Cancelado;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 TempData["MensagemSucesso"] = "Agendamento cancelado com sucesso.";
             }
             return RedirectToAction("MeusAgendamentos");
         }
 
         [HttpPost]
-        public IActionResult AprovarAtendimento(int id)
+        public async Task<IActionResult> AprovarAtendimento(int id)
         {
             var atendimento = _context.Atendimentos.Find(id);
             if (atendimento != null)
             {
                 atendimento.Status = StatusAtendimento.Aprovado;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 TempData["MensagemSucesso"] = "Agendamento aprovado com sucesso.";
             }
             return RedirectToAction("MeusAgendamentos");
         }
 
         [HttpPost]
-        public IActionResult AvaliarTecnico(int AtendimentoId, int Nota, string Comentario)
+        public async Task<IActionResult> AvaliarTecnico(int AtendimentoId, int Nota, string Comentario)
         {
             var atendimento = _context.Atendimentos.Find(AtendimentoId);
             if (atendimento != null)
@@ -188,7 +188,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 // 3. Opcional: Marcar que este atendimento já foi avaliado
                 // atendimento.Avaliado = true; 
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 TempData["MensagemSucesso"] = "Obrigado por sua avaliação!";
             }
             else

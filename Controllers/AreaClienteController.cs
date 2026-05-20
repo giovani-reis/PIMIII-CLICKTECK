@@ -38,6 +38,9 @@ namespace PIMIII_CLICKTECK.Controllers
             var tecnicos = await _context.TecnicoPerfis
                 .Include(t => t.Usuario)
                 .Where(t => t.Disponivel)
+                .OrderByDescending(a => _context.Avaliacoes
+                    .Where(t => t.TecnicoId == a.UsuarioId)
+                    .Average(a => (double?)a.Nota))
                 .Select(t => new DashBoardViewModel
                 {
                     Id = t.Id,
@@ -50,6 +53,7 @@ namespace PIMIII_CLICKTECK.Controllers
                     Avaliacao = _context.Avaliacoes
                         .Where(a => a.TecnicoId == t.UsuarioId)
                         .Average(a => (double?)a.Nota) ?? 0.0,
+                        
 
                     // 2. Contagem de Reparos (Retorna 0 se não houver correspondência)
                     QtdReparos = _context.Atendimentos

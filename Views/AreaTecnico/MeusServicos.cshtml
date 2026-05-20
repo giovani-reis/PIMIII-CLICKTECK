@@ -129,16 +129,23 @@
                         }
                     </div>
 
-                    <div class="service-actions">
+                    <div class="service-actions" style="display: flex; gap: 10px; width: 100%;">
                         @if (servico.Status == "APROVADO")
                         {
-                            <button class="btn-primary btn-abrir-finalizar" data-id="@servico.AtendimentoId">
+                            @* Botão Outline do Chat *@
+                            <button class="btn-outline" data-id="@servico.AtendimentoId"
+                                    style="background: transparent;border: 1px solid #e0e0e0;">
+                                Abrir Chat
+                            </button>
+
+                            @* Botão de Finalizar (ganhou flex: 1 para dividir a linha) *@
+                            <button class="btn-primary btn-abrir-finalizar" data-id="@servico.AtendimentoId" style="flex: 1;">
                                 Finalizar Serviço
                             </button>
                         }
                         else if (servico.Status == "PENDENTEAPROVACAO")
                         {
-                            <button class="btn-disabled" disabled>Aguardando Aprovação</button>
+                            <button class="btn-disabled" disabled style="width: 100%;">Aguardando Aprovação</button>
                         }
                     </div>
                 </div>

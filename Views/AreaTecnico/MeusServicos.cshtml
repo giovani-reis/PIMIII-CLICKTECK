@@ -64,7 +64,7 @@
 
         <div class="services-grid" id="accepted-services-grid">
 
-            @foreach (var servico   in Model)
+            @foreach (var servico in Model)
             {
                 <div class="service-card" data-status="@servico.Status.ToLower()">
                     <div class="service-header">
@@ -88,29 +88,43 @@
                             }
                             else if (servico.Status == "CANCELADO")
                             {
-                                <span class="status-badge status-completed">#@servico.AtendimentoId</span>
-                                <span class="status-badge status-completed">Cancelado</span>
+                                <span class="status-badge status-canceled">#@servico.AtendimentoId</span>
+                                <span class="status-badge status-canceled">Cancelado</span>
                             }
                         </div>
                         <div class="service-date">
                             Abertura:<br>@servico.DataAbertura.ToString("dd/MM/yyyy")<br />@servico.DataAbertura.ToString("HH:mm")
-                            @if (servico.DataConclusao.HasValue)
-                            {
-                                <br>
-
-                                <span style="color:var(--success-green); margin-top:5px; display:block;">Fechamento:<br>@servico.DataConclusao.Value.ToString("dd/MM/yyyy")</span>
-                            }
+                            @* A data de fechamento foi removida daqui *@
                         </div>
                     </div>
 
-                    <div class="service-details">
-                        <strong>Aparelho: @servico.Aparelho</strong>
-                        <p>@servico.Descricao</p>
+                    @* Alterado para usar a estrutura e classes do header *@
+                    <div class="service-header" style="border-bottom: 0px solid var(--border-color); margin-bottom:0;">
+                        <div class="client-info">
+                            <strong>Aparelho: @servico.Aparelho</strong>
+                            <p style="margin-top: 5px; color: var(--text-light);">@servico.Descricao</p>
 
+                        </div>
+
+                        @* Lado direito contendo apenas a data de fechamento se ela existir *@
+                        <div class="service-date">
+                            @if (servico.DataConclusao.HasValue)
+                            {
+                                <div>Fechamento:<br>@servico.DataConclusao.Value.ToString("dd/MM/yyyy")<br />@servico.DataConclusao.Value.ToString("HH/mm")</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="service-details">
                         @if (servico.ValorOrcamento.HasValue)
                         {
-                            <div class="agreed-price">
+                            <div class="agreed-price" style="margin-top: 10px;">
                                 Valor do Orçamento: <span>@(((decimal)servico.ValorOrcamento).ToString("C2"))</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="agreed-price" style="margin-top: 10px;">
+                                Valor do Orçamento: <span>R$--,--</span>
                             </div>
                         }
                     </div>

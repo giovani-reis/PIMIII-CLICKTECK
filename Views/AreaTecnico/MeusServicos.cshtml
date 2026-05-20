@@ -110,7 +110,7 @@
                         <div class="service-date">
                             @if (servico.DataConclusao.HasValue)
                             {
-                                <div>Fechamento:<br>@servico.DataConclusao.Value.ToString("dd/MM/yyyy")<br />@servico.DataConclusao.Value.ToString("HH/mm")</div>
+                                <div>Fechamento:<br>@servico.DataConclusao.Value.ToString("dd/MM/yyyy")<br />@servico.DataConclusao.Value.ToString("HH:mm")</div>
                             }
                         </div>
                     </div>
@@ -236,7 +236,7 @@
             }
 
             // Inicia clicando na aba "Em Andamento" (Aprovado)
-            applyFilter("aprovado");
+            applyFilter("todos");
 
             // Evento de clique nas abas
             filterBtns.forEach(btn => {

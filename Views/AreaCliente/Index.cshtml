@@ -52,11 +52,7 @@
             transition: all 0.25s ease;
             outline: none;
 
-            max-height: 150px; /* Limita a altura máxima vertical */
-            overflow-y: auto; /* Ativa a barra vertical apenas quando necessário */
-            overflow-x: auto; /* Ativa a barra horizontal apenas quando necessário */
-            white-space: nowrap; /* Opcional: força o texto a NÃO quebrar linha automaticamente (gerando o scroll lateral) */
-        
+                    
         }
 
             .custom-textarea:focus {
@@ -371,6 +367,7 @@
                         <label for="Aparelho" class="field-label">Qual é o seu aparelho?</label>
                         <input type="text" name="Aparelho" id="Aparelho"
                                class="custom-textarea"
+                               maxlength="50"
                                placeholder="Ex: iPhone 13 Pro, Notebook Dell G15, etc."
                                required />
                     </div>

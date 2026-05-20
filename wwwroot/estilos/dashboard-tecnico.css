@@ -343,6 +343,7 @@
 
 .service-details {
     margin-bottom: 20px;
+
 }
 
     .service-details strong {
@@ -350,12 +351,18 @@
         color: var(--text-main);
         display: block;
         margin-bottom: 5px;
+        max-height: 150px; /* Limita a altura máxima vertical */
+        overflow-y: auto; /* Ativa a barra vertical apenas quando necessário */
+        overflow-x: auto; /* Ativa a barra horizontal apenas quando necessário */
     }
 
     .service-details p {
         font-size: 14px;
         color: var(--text-light);
         line-height: 1.5;
+        max-height: 150px; /* Limita a altura máxima vertical */
+        overflow-y: auto; /* Ativa a barra vertical apenas quando necessário */
+        overflow-x: auto; /* Ativa a barra horizontal apenas quando necessário */
     }
 
 .service-actions {

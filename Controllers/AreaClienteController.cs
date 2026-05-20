@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
                     // 2. Contagem de Reparos (Retorna 0 se não houver correspondência)
                     QtdReparos = _context.Atendimentos
-                        .Count(a => a.TecnicoId == t.UsuarioId && a.Status == StatusAtendimento.Finalizado),
+                        .Count(a =>  a.TecnicoId == t.UsuarioId && a.Status == StatusAtendimento.Finalizado),
 
                     // 3. Pegando as Especialidades Reais da sua tabela de ligação
                     Tags = _context.TecnicoEspecialidades
@@ -125,7 +126,7 @@ namespace PIMIII_CLICKTECK.Controllers
                     TecnicoFoto = _context.TecnicoPerfis
                                     .Where(p => p.UsuarioId == a.TecnicoId)
                                     .Select(p => p.FotoUrl)
-                                    .FirstOrDefault() ?? "/img/default-avatar.jpg",
+                                    .FirstOrDefault() ?? "default-avatar.jpg",
 
                     TecnicoEspecialidade = _context.TecnicoEspecialidades
                                             .Include(te => te.Especialidade)
@@ -141,6 +142,7 @@ namespace PIMIII_CLICKTECK.Controllers
                     Status = a.Status.ToString().ToUpper() // Usamos ToUpper para facilitar o switch no HTML
                 })
                 .ToListAsync();
+
 
             return View(agendamentos);
         }

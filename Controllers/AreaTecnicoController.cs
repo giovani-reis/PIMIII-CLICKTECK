@@ -80,7 +80,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 atendimento.Status = StatusAtendimento.PendenteAprovacao;
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("MeusServicos");
         }
 
         [HttpPost]

@@ -12,5 +12,6 @@
         public string? ObservacaoTecnico { get; set; }
         public DateTime DataAbertura { get; set; }
         public string Status { get; set; }
+        public bool JaAvaliado { get; set; }
     }
 }

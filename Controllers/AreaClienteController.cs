@@ -115,7 +115,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
             // Buscamos os atendimentos e transformamos para a ViewModel que criamos
             var agendamentos = await _context.Atendimentos
-                .Include(a => a.Tecnico) // Traz os dados do usuário técnico
+                .Include(a => a.Tecnico)// Traz os dados do usuário técnico
                 .Where(a => a.ClienteId == idUsuario)
                 .OrderByDescending(a => a.DataAbertura)
                 .Select(a => new MeusAgendamentosViewModel
@@ -133,6 +133,8 @@ namespace PIMIII_CLICKTECK.Controllers
                                             .Where(te => te.TecnicoPerfil.UsuarioId == a.TecnicoId)
                                             .Select(te => te.Especialidade.Nome)
                                             .FirstOrDefault() ?? "Técnico Especialista",
+                    JaAvaliado = _context.Avaliacoes
+                                    .Any(av => av.TecnicoId == a.TecnicoId),
 
                     Modelo = a.Aparelho,
                     ServicoDescricao = a.Descricao,
@@ -204,5 +206,6 @@ namespace PIMIII_CLICKTECK.Controllers
 
             return RedirectToAction("MeusAgendamentos");
         }
+
     }
 }

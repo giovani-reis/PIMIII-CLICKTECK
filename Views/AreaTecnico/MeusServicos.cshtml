@@ -132,10 +132,8 @@
                     <div class="service-actions" style="display: flex; gap: 10px; width: 100%;">
                         @if (servico.Status == "APROVADO")
                         {
-                            @* Botão Outline do Chat *@
-                            <button class="btn-outline" data-id="@servico.AtendimentoId"
-                                    style="background: transparent;border: 1px solid #e0e0e0;">
-                                Abrir Chat
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("Index", "Chat", new { atendimentoId = servico.AtendimentoId })'">
+                                Falar com o Cliente
                             </button>
 
                             @* Botão de Finalizar (ganhou flex: 1 para dividir a linha) *@

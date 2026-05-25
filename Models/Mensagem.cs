@@ -12,5 +12,8 @@
 
         public string Conteudo { get; set; }
         public DateTime DataEnvio { get; set; } = DateTime.Now;
+
+        public int AtendimentoId { get; set; }
+        public Atendimento Atendimento { get; set; }
     }
 }

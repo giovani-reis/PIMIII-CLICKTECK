@@ -233,7 +233,9 @@
                                 </form>
                                 break;
                             case "APROVADO":
-                                <button class="btn-outline btn-chat">Abrir Chat</button>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("Index", "Chat", new { atendimentoId = item.AtendimentoId })'">
+                                    Falar com o Técnico
+                                </button>
 
                                 break;
                             case "FINALIZADO":

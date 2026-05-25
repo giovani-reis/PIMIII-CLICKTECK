@@ -61,7 +61,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasIndex("TecnicoId");
 
-                    b.ToTable("Atendimentos");
+                    b.ToTable("Atendimentos", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Avaliacao", b =>
@@ -90,7 +90,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasIndex("TecnicoId");
 
-                    b.ToTable("Avaliacoes");
+                    b.ToTable("Avaliacoes", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Especialidade", b =>
@@ -107,7 +107,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Especialidades");
+                    b.ToTable("Especialidades", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Favorito", b =>
@@ -122,7 +122,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasIndex("TecnicoId");
 
-                    b.ToTable("Favoritos");
+                    b.ToTable("Favoritos", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Mensagem", b =>
@@ -152,7 +152,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasIndex("RemetenteId");
 
-                    b.ToTable("Mensagens");
+                    b.ToTable("Mensagens", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.TecnicoEspecialidade", b =>
@@ -167,7 +167,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasIndex("EspecialidadeId");
 
-                    b.ToTable("TecnicoEspecialidades");
+                    b.ToTable("TecnicoEspecialidades", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.TecnicoPerfil", b =>
@@ -195,7 +195,7 @@ namespace PIMIII_CLICKTECK.Migrations
                     b.HasIndex("UsuarioId")
                         .IsUnique();
 
-                    b.ToTable("TecnicoPerfis");
+                    b.ToTable("TecnicoPerfis", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Usuario", b =>
@@ -223,7 +223,7 @@ namespace PIMIII_CLICKTECK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("PIM_TechTrust.Models.Atendimento", b =>

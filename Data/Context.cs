@@ -44,9 +44,22 @@ namespace PIMIII_CLICKTECK.Data
                 e.HasOne(a => a.Tecnico).WithMany().HasForeignKey(a => a.TecnicoId).OnDelete(DeleteBehavior.Restrict);
             });
 
-            builder.Entity<Mensagem>(e => {
-                e.HasOne(m => m.Remetente).WithMany().HasForeignKey(m => m.RemetenteId).OnDelete(DeleteBehavior.Restrict);
-                e.HasOne(m => m.Destinatario).WithMany().HasForeignKey(m => m.DestinatarioId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Mensagem>(e =>
+            {
+                e.HasOne(m => m.Remetente)
+                    .WithMany()
+                    .HasForeignKey(m => m.RemetenteId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne(m => m.Destinatario)
+                    .WithMany()
+                    .HasForeignKey(m => m.DestinatarioId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne(m => m.Atendimento)
+                    .WithOne()
+                    .HasForeignKey<Mensagem>(m => m.AtendimentoId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             builder.Entity<Favorito>(e => {

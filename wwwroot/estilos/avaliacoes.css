@@ -1,0 +1,340 @@
+﻿:root {
+    --primary-blue: #0ea5e9;
+    --dark-blue: #0284c7;
+    --text-main: #1e293b;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --bg-gray: #f8fafc;
+    --border-light: #e2e8f0;
+    --star-color: #fbbf24;
+    /* Amarelo das estrelas */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background-color: var(--bg-gray);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+/* =========================================
+         NAVBAR E BOTÃO VOLTAR
+         ========================================= */
+.dash-navbar {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-light);
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dash-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.logo-icon {
+    background: var(--primary-blue);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+    .logo-text span {
+        color: var(--primary-blue);
+    }
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(--white);
+    color: var(--text-main);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+    .btn-voltar:hover {
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(14, 165, 233, 0.1);
+    }
+
+    .btn-voltar svg {
+        transition: transform 0.2s ease;
+    }
+
+    .btn-voltar:hover svg {
+        transform: translateX(-3px);
+    }
+
+/* =========================================
+         LAYOUT CENTRALIZADO
+         ========================================= */
+.main-centered {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-header {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+    .content-header h1 {
+        font-size: 32px;
+        color: var(--text-main);
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .content-header p {
+        color: var(--text-light);
+        font-size: 15px;
+    }
+
+/* =========================================
+         CARD VISÃO GERAL DE AVALIAÇÕES
+         ========================================= */
+.rating-overview {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.rating-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+}
+
+    .rating-score h2 {
+        font-size: 64px;
+        font-weight: 800;
+        color: var(--text-main);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+.stars-big {
+    display: flex;
+    gap: 4px;
+    color: var(--star-color);
+    margin-bottom: 8px;
+}
+
+    .stars-big svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+    }
+
+    .stars-big .half-star {
+        position: relative;
+    }
+
+.rating-score p {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rating-bars {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.bar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+    .bar-item span {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-main);
+        min-width: 20px;
+    }
+
+.bar-track {
+    flex: 1;
+    height: 8px;
+    background-color: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background-color: var(--star-color);
+    border-radius: 4px;
+}
+
+.bar-count {
+    font-size: 13px;
+    color: var(--text-light);
+    min-width: 25px;
+    text-align: right;
+}
+
+/* =========================================
+         LISTA DE AVALIAÇÕES (CLIENTES)
+         ========================================= */
+.review-card {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: 0.2s;
+}
+
+    .review-card:hover {
+        border-color: #cbd5e1;
+        transform: translateY(-2px);
+    }
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.reviewer-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.reviewer-details h4 {
+    font-size: 16px;
+    color: var(--text-main);
+    margin-bottom: 2px;
+}
+
+.reviewer-details span {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.review-stars-small {
+    display: flex;
+    gap: 2px;
+    color: var(--star-color);
+}
+
+    .review-stars-small svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+    }
+
+.review-text {
+    font-size: 15px;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.service-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .rating-overview {
+        flex-direction: column;
+        gap: 30px;
+        padding: 30px 20px;
+    }
+
+    .rating-bars {
+        width: 100%;
+    }
+
+    .review-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

@@ -5,6 +5,7 @@ using PIM_TechTrust.Models;
 using PIM_TechTrust.Models.Enums;
 using PIMIII_CLICKTECK.Data;
 using PIMIII_CLICKTECK.Models.ViewModels;
+using System.Globalization;
 
 namespace PIMIII_CLICKTECK.Controllers
 {
@@ -151,5 +152,44 @@ namespace PIMIII_CLICKTECK.Controllers
             return RedirectToAction("MeusServicos");
         }
 
+
+
+        [HttpGet]
+        public IActionResult Avaliacoes()
+        {
+            var usuLogado = TempData["Tecnico"];
+            if (usuLogado == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            TempData.Keep("Tecnico"); // Mantém a sessão ativa
+
+            int tecnicoId = (int)usuLogado;
+
+
+            var avaliacoes = _context.Avaliacoes
+                .Include(a => a.Cliente)
+                .Where(a => a.TecnicoId == tecnicoId)
+                .OrderByDescending(a => a.Nota)
+                .ToList();
+
+            var viewModel = new AvaliacoesViewModel
+            {
+                Avaliacoes = avaliacoes,
+                TotalAvaliacoes = avaliacoes.Count,
+
+                MediaNotas = avaliacoes.Count > 0
+                    ? avaliacoes.Average(a => a.Nota)
+                    : 0,
+
+                Quantidade5 = avaliacoes.Count(a => a.Nota == 5),
+                Quantidade4 = avaliacoes.Count(a => a.Nota == 4),
+                Quantidade3 = avaliacoes.Count(a => a.Nota == 3),
+                Quantidade2 = avaliacoes.Count(a => a.Nota == 2),
+                Quantidade1 = avaliacoes.Count(a => a.Nota == 1)
+            };
+
+            return View(viewModel);
+        }
     }
 }

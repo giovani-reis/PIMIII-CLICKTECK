@@ -1,0 +1,328 @@
+﻿@model PIMIII_CLICKTECK.Models.ViewModels.AvaliacoesViewModel
+@using System.Globalization;
+
+@{
+    Layout = null;
+
+}
+
+
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechTrust | Minhas Avaliações</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/estilos/avaliacoes.css" />
+
+    <style>
+        .estrela-vazia svg {
+        width: 15px;
+        height: 15px;
+        }
+
+        .estrela-vazia polygon {
+        fill: none;
+        stroke: #fbbf24;
+        stroke-width: 2;
+        }
+
+        .estrela-vazia-big svg{
+            width: 24px;
+            height: 24px;
+        }
+
+        .estrela-vazia-big polygon {
+            fill: none;
+            stroke: #fbbf24;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="dash-navbar">
+        <div class="dash-nav-container">
+
+            <div class="logo"
+                 onclick="window.location.href='@Url.Action("Index", "Home")'"
+                 style="cursor: pointer">
+
+                <div class="logo-icon">CT</div>
+
+                <span class="logo-text">
+                    Click<span>Tech</span>
+                </span>
+            </div>
+
+            <div class="user-menu">
+
+                <a href="javascript:history.back()" class="btn-voltar">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="18"
+                         height="18"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+
+                    </svg>
+
+                    Voltar ao Painel
+
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-centered">
+
+        <header class="content-header">
+            <h1>Minhas Avaliações</h1>
+            <p>
+                Acompanhe o que seus clientes estão dizendo sobre seus serviços.
+            </p>
+        </header>
+
+        <div class="rating-overview">
+
+            <div class="rating-score">
+
+                <h2>
+                    @Model.MediaNotas.ToString("N1", CultureInfo.InvariantCulture)
+                </h2>
+
+                <div class="stars-big">
+
+                    @{
+                        var notaInteira = (int)Math.Floor(Model.MediaNotas);
+                    }
+
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= notaInteira)
+                        {
+                            <svg viewBox="0 0 24 24">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                        }
+                        else
+                        {
+                            <div class="estrela-vazia-big">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                        }
+                    }
+
+                </div>
+
+                <p>
+                    De @Model.TotalAvaliacoes avaliações
+                </p>
+
+            </div>
+
+            <div class="rating-bars">
+
+                <div class="bar-item">
+
+                    <span>5</span>
+
+                    <div class="bar-track">
+
+                        <div class="bar-fill"
+                             style="width:@(Model.TotalAvaliacoes > 0 ? (Model.Quantidade5 * 100 / Model.TotalAvaliacoes) : 0)%">
+                        </div>
+
+                    </div>
+
+                    <div class="bar-count">
+                        @Model.Quantidade5
+                    </div>
+
+                </div>
+
+                <div class="bar-item">
+
+                    <span>4</span>
+
+                    <div class="bar-track">
+
+                        <div class="bar-fill"
+                             style="width:@(Model.TotalAvaliacoes > 0 ? (Model.Quantidade4 * 100 / Model.TotalAvaliacoes) : 0)%">
+                        </div>
+
+                    </div>
+
+                    <div class="bar-count">
+                        @Model.Quantidade4
+                    </div>
+
+                </div>
+
+                <div class="bar-item">
+
+                    <span>3</span>
+
+                    <div class="bar-track">
+
+                        <div class="bar-fill"
+                             style="width:@(Model.TotalAvaliacoes > 0 ? (Model.Quantidade3 * 100 / Model.TotalAvaliacoes) : 0)%">
+                        </div>
+
+                    </div>
+
+                    <div class="bar-count">
+                        @Model.Quantidade3
+                    </div>
+
+                </div>
+
+                <div class="bar-item">
+
+                    <span>2</span>
+
+                    <div class="bar-track">
+
+                        <div class="bar-fill"
+                             style="width:@(Model.TotalAvaliacoes > 0 ? (Model.Quantidade2 * 100 / Model.TotalAvaliacoes) : 0)%">
+                        </div>
+
+                    </div>
+
+                    <div class="bar-count">
+                        @Model.Quantidade2
+                    </div>
+
+                </div>
+
+                <div class="bar-item">
+
+                    <span>1</span>
+
+                    <div class="bar-track">
+
+                        <div class="bar-fill"
+                             style="width:@(Model.TotalAvaliacoes > 0 ? (Model.Quantidade1 * 100 / Model.TotalAvaliacoes) : 0)%">
+                        </div>
+
+                    </div>
+
+                    <div class="bar-count">
+                        @Model.Quantidade1
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+
+            @if (Model.Avaliacoes.Any())
+            {
+                @foreach (var avaliacao in Model.Avaliacoes)
+                {
+                    <div class="review-card">
+
+                        <div class="review-header">
+
+                            <div class="reviewer-info">
+
+                                <div class="reviewer-avatar"
+                                     style="background: #e0f2fe; color: #0ea5e9;">
+
+                                    @avaliacao.Cliente.Nome.Substring(0, 1).ToUpper()
+
+                                </div>
+
+                                <div class="reviewer-details">
+
+                                    <h4>
+                                        @avaliacao.Cliente.Nome
+                                    </h4>
+
+                                    <span>
+                                        Avaliação recente
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="review-stars-small">
+
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= avaliacao.Nota)
+                                    {
+                                        <svg viewBox="0 0 24 24">
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                            </polygon>
+                                        </svg>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="estrela-vazia">
+                                            <svg viewBox="0 0 24 24">
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <p class="review-text">
+                            @avaliacao.Comentario
+                        </p>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="review-card">
+
+                    <p class="review-text">
+                        Nenhuma avaliação encontrada.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </main>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+</body>
+
+</html>

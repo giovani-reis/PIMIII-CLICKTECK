@@ -191,5 +191,11 @@ namespace PIMIII_CLICKTECK.Controllers
 
             return View(viewModel);
         }
+
+        [HttpGet]
+        public IActionResult Ajuda()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,331 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickTech | Central de Ajuda</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="~/estilos/ajuda.css"
+          asp-append-version="true" />
+
+    <link rel="apple-touch-icon"
+          sizes="180x180"
+          href="~/img/apple-touch-icon.png" />
+
+    <link rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="~/img/favicon-32x32.png" />
+
+    <link rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="~/img/favicon-16x16.png" />
+
+    <link rel="manifest"
+          href="~/img/site.webmanifest" />
+</head>
+
+<body class="dashboard-body">
+
+    <nav class="dash-navbar">
+        <div class="dash-nav-container">
+
+            <div class="logo"
+                 onclick="window.location.href='@Url.Action("Index", "AreaTecnico")'">
+
+                <div class="logo-icon">CT</div>
+
+                <span class="logo-text">
+                    Click<span>Tech</span>
+                </span>
+            </div>
+
+            <div class="user-menu">
+
+                <a href="@Url.Action("Index", "AreaTecnico")"
+                   class="btn-voltar">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="18"
+                         height="18"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+
+                    Voltar ao Painel
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <section class="help-hero">
+        <div class="container">
+
+            <h1>Como podemos ajudar?</h1>
+
+            
+        </div>
+    </section>
+
+    <main class="container help-main">
+
+        <div class="help-categories">
+
+            <div class="category-card">
+                <div class="cat-icon">👤</div>
+
+                <h3>Minha Conta</h3>
+
+                <p>
+                    Gerencie as suas especialidades e dados do perfil.
+                </p>
+            </div>
+
+            <div class="category-card">
+                <div class="cat-icon">💳</div>
+
+                <h3>Pagamentos</h3>
+
+                <p>
+                    Saques, comissões da plataforma e histórico financeiro.
+                </p>
+            </div>
+
+            <div class="category-card">
+                <div class="cat-icon">🛠️</div>
+
+                <h3>Serviços</h3>
+
+                <p>
+                    Gestão de orçamentos, prazos e avaliações.
+                </p>
+            </div>
+
+            <div class="category-card">
+                <div class="cat-icon">🛡️</div>
+
+                <h3>Segurança</h3>
+
+                <p>
+                    Políticas de privacidade e segurança no atendimento.
+                </p>
+            </div>
+
+        </div>
+
+        <section class="faq-section">
+
+            <h2>Dúvidas Frequentes</h2>
+
+            <div class="faq-list">
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        Existe alguma mensalidade para eu usar a plataforma?
+
+                        <span>+</span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Não. Não cobramos mensalidades ou taxas de adesão.
+                            A plataforma apenas retém uma comissão sobre
+                            serviços concluídos.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        Existe alguma taxa cobrada pela plataforma?
+
+                        <span>+</span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Sim. A plataforma retém uma taxa fixa sobre
+                            cada orçamento aprovado.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        Como adicionar novas especialidades ao perfil?
+
+                        <span>+</span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            Vá até "Meu Perfil" e depois em
+                            "Especialidades" para adicionar novas tags.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        O que acontece se eu recusar um serviço?
+
+                        <span>+</span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            O cliente será notificado e o pedido será
+                            redirecionado para outros técnicos.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="faq-item">
+
+                    <button class="faq-question">
+
+                        Como funciona a segurança dos pagamentos?
+
+                        <span>+</span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <p>
+                            O pagamento do cliente fica retido com segurança
+                            até a conclusão do serviço.
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="support-banner-container">
+
+            <div class="support-banner">
+
+                <div class="support-banner-text">
+
+                    <h3>
+                        Ainda precisa de ajuda?
+                    </h3>
+
+                    <p>
+                        Nossa equipe está disponível de segunda a sábado,
+                        das 08h às 18h.
+                    </p>
+
+                </div>
+
+                <a href="#"
+                   class="btn-support-white">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="20"
+                         height="20"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+                                 19.79 19.79 0 0 1-8.63-3.07
+                                 19.5 19.5 0 0 1-6-6
+                                 19.79 19.79 0 0 1-3.07-8.67
+                                 A2 2 0 0 1 4.11 2h3
+                                 a2 2 0 0 1 2 1.72
+                                 12.84 12.84 0 0 0 .7 2.81
+                                 2 2 0 0 1-.45 2.11L8.09 9.91
+                                 a16 16 0 0 0 6 6l1.27-1.27
+                                 a2 2 0 0 1 2.11-.45
+                                 12.84 12.84 0 0 0 2.81.7
+                                 A2 2 0 0 1 22 16.92z">
+                        </path>
+
+                    </svg>
+
+                    Falar com Suporte
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script>
+
+        document.querySelectorAll(".faq-question").forEach((button) => {
+
+            button.addEventListener("click", () => {
+
+                const faqItem = button.parentElement;
+
+                faqItem.classList.toggle("active");
+
+                const span = button.querySelector("span");
+
+                span.innerText =
+                    faqItem.classList.contains("active")
+                        ? "−"
+                        : "+";
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

@@ -207,5 +207,11 @@ namespace PIMIII_CLICKTECK.Controllers
             return RedirectToAction("MeusAgendamentos");
         }
 
+        [HttpGet]
+        public IActionResult Ajuda()
+        {
+            return View();
+        }
+
     }
 }

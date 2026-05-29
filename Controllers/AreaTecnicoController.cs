@@ -94,7 +94,7 @@ namespace PIMIII_CLICKTECK.Controllers
                 await _context.SaveChangesAsync();
                 TempData["MensagemSucesso"] = "Agendamento cancelado com sucesso.";
             }
-            return View();
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
 
@@ -187,6 +187,42 @@ namespace PIMIII_CLICKTECK.Controllers
                 Quantidade3 = avaliacoes.Count(a => a.Nota == 3),
                 Quantidade2 = avaliacoes.Count(a => a.Nota == 2),
                 Quantidade1 = avaliacoes.Count(a => a.Nota == 1)
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Perfil()
+        {
+            // ID do técnico logado
+            var usuLogado = TempData["Tecnico"];
+            if (usuLogado == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            TempData.Keep("Tecnico"); // Mantém a sessão ativa
+
+            int idTecnico = (int)usuLogado;
+
+            // Busca técnico no banco
+            var tecnico = await _context.Usuarios
+                .Include(a => a.TecnicoPerfil)
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+
+            var viewModel = new PerfilTecnicoViewModel
+            {
+                Nome = tecnico.Nome,
+                Email = tecnico.Email,
+                Bio = tecnico.TecnicoPerfil.Descricao,
+                FotoPerfil = tecnico.TecnicoPerfil.FotoUrl,
+
+                Especialidades = await _context.TecnicoEspecialidades
+                                                .Include(es => es.Especialidade)
+                                                .Where(e => e.TecnicoPerfilId == idTecnico)
+                                                .Select(es => es.Especialidade.Nome)
+                                                .ToListAsync()
             };
 
             return View(viewModel);

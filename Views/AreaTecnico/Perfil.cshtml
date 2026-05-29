@@ -1,0 +1,417 @@
+﻿@model PIMIII_CLICKTECK.Models.ViewModels.PerfilTecnicoViewModel
+
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>ClickTech | Perfil do Técnico</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="~/estilos/perfil-tecnico.css" />
+</head>
+
+<body class="dashboard-body">
+
+    <nav class="dash-navbar">
+
+        <div class="dash-nav-container">
+
+            <div class="logo"
+                 onclick="window.location.href='@Url.Action("Index", "AreaTecnico")'"
+                 style="cursor:pointer">
+
+                <div class="logo-icon">
+                    CT
+                </div>
+
+                <span class="logo-text">
+                    Click<span>Tech</span>
+                </span>
+
+            </div>
+
+            <div class="user-menu">
+
+                <a href="@Url.Action("Index", "AreaTecnico")"
+                   class="btn-voltar">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="18"
+                         height="18"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="19"
+                              y1="12"
+                              x2="5"
+                              y2="12"></line>
+
+                        <polyline points="12 19 5 12 12 5"></polyline>
+
+                    </svg>
+
+                    Voltar ao Painel
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <main class="dash-main profile-page">
+
+        <div class="container profile-layout">
+
+            <!-- SIDEBAR -->
+            <aside class="profile-sidebar">
+
+                <div class="sidebar-user-info">
+
+                    <img src="@Model.FotoPerfil"
+                         alt="Foto de Perfil"
+                         id="sidebar-img"
+                         class="sidebar-avatar" />
+
+                    <h3>@Model.Nome</h3>
+
+                    <p>Técnico Parceiro</p>
+
+                </div>
+
+                <ul class="sidebar-nav">
+
+                    <li>
+
+                        <a href="#"
+                           class="nav-tab active"
+                           data-target="aba-dados">
+
+                            Dados Profissionais
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#"
+                           class="nav-tab"
+                           data-target="aba-especialidades">
+
+                            Especialidades
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="#"
+                           class="nav-tab"
+                           data-target="aba-seguranca">
+
+                            Segurança
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </aside>
+
+            <!-- CONTEÚDO -->
+            <section class="profile-content">
+
+                <!-- DADOS -->
+                <div id="aba-dados"
+                     class="tab-pane active">
+
+                    <header class="content-header">
+
+                        <h2>
+                            Dados Profissionais
+                        </h2>
+
+                        <p>
+                            Atualize suas informações profissionais.
+                        </p>
+
+                    </header>
+
+                    <div class="avatar-upload-section">
+
+                        <img src="@Model.FotoPerfil"
+                             alt="Sua Foto"
+                             id="main-avatar"
+                             class="current-avatar" />
+
+                    </div>
+
+                    <hr class="divider" />
+
+                    <form method="post"
+                          action="@Url.Action("AtualizarDados", "AreaTecnico")"
+                          class="profile-form">
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Nome
+                                </label>
+
+                                <input type="text"
+                                       name="Nome"
+                                       value="@Model.Nome"
+                                       class="form-input" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Email
+                                </label>
+
+                                <input type="email"
+                                       name="Email"
+                                       value="@Model.Email"
+                                       class="form-input" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Resumo Profissional
+                                </label>
+
+                                <textarea name="Bio"
+                                          rows="4"
+                                          class="form-input">@Model.Bio</textarea>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button type="submit"
+                                    class="btn-primary">
+
+                                Salvar Alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- ESPECIALIDADES -->
+                <div id="aba-especialidades"
+                     class="tab-pane">
+
+                    <header class="content-header">
+
+                        <h2>
+                            Especialidades
+                        </h2>
+
+                        <p>
+                            Gerencie suas especialidades técnicas.
+                        </p>
+
+                    </header>
+
+                    <form method="post"
+                          action="@Url.Action("AtualizarEspecialidades", "AreaTecnico")"
+                          class="profile-form">
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Especialidades
+                                </label>
+
+                                <textarea name="EspecialidadesTexto"
+                                          rows="5"
+                                          class="form-input">@string.Join(", ", Model.Especialidades)</textarea>
+
+                                <span class="help-text">
+                                    Separe por vírgula.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button type="submit"
+                                    class="btn-primary">
+
+                                Atualizar Perfil
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- SEGURANÇA -->
+                <div id="aba-seguranca"
+                     class="tab-pane">
+
+                    <header class="content-header">
+
+                        <h2>
+                            Segurança
+                        </h2>
+
+                        <p>
+                            Atualize sua senha de acesso.
+                        </p>
+
+                    </header>
+
+                    <form method="post"
+                          action="@Url.Action("AtualizarSenha", "AreaTecnico")"
+                          class="profile-form">
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Senha Atual
+                                </label>
+
+                                <input type="password"
+                                       name="SenhaAtual"
+                                       class="form-input"
+                                       placeholder="Digite sua senha atual" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Nova Senha
+                                </label>
+
+                                <input type="password"
+                                       name="NovaSenha"
+                                       class="form-input"
+                                       placeholder="Digite a nova senha" />
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+                                    Confirmar Nova Senha
+                                </label>
+
+                                <input type="password"
+                                       name="ConfirmarSenha"
+                                       class="form-input"
+                                       placeholder="Confirme a nova senha" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+
+                            <button type="submit"
+                                    class="btn-primary">
+
+                                Atualizar Senha
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        const tabs = document.querySelectorAll(".nav-tab");
+        const panes = document.querySelectorAll(".tab-pane");
+
+        tabs.forEach(tab => {
+
+            tab.addEventListener("click", function (e) {
+
+                e.preventDefault();
+
+                tabs.forEach(t => {
+                    t.classList.remove("active");
+                });
+
+                panes.forEach(p => {
+                    p.classList.remove("active");
+                });
+
+                this.classList.add("active");
+
+                const target = this.getAttribute("data-target");
+
+                document
+                    .getElementById(target)
+                    .classList.add("active");
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

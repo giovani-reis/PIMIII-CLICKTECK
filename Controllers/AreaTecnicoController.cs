@@ -12,10 +12,13 @@ namespace PIMIII_CLICKTECK.Controllers
     public class AreaTecnicoController : Controller
     {
         private readonly Context _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public AreaTecnicoController(Context context)
+
+        public AreaTecnicoController(Context context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
 
@@ -195,38 +198,245 @@ namespace PIMIII_CLICKTECK.Controllers
         [HttpGet]
         public async Task<IActionResult> Perfil()
         {
-            // ID do técnico logado
             var usuLogado = TempData["Tecnico"];
+
             if (usuLogado == null)
-            {
                 return RedirectToAction("Index", "Login");
-            }
-            TempData.Keep("Tecnico"); // Mantém a sessão ativa
+
+            TempData.Keep("Tecnico");
 
             int idTecnico = (int)usuLogado;
 
-            // Busca técnico no banco
-            var tecnico = await _context.Usuarios
-                .Include(a => a.TecnicoPerfil)
+            var perfil = await _context.Usuarios
+                .Include(t => t.TecnicoPerfil)
+
                 .FirstOrDefaultAsync(t => t.Id == idTecnico);
 
+            if (perfil == null)
+                return NotFound();
 
-            var viewModel = new PerfilTecnicoViewModel
+            var vm = new PerfilTecnicoViewModel
             {
-                Nome = tecnico.Nome,
-                Email = tecnico.Email,
-                Bio = tecnico.TecnicoPerfil.Descricao,
-                FotoPerfil = tecnico.TecnicoPerfil.FotoUrl,
+                Nome = perfil.Nome,
+                Email = perfil.Email,
+                Bio = perfil.TecnicoPerfil.Descricao,
+                FotoPerfil = perfil.TecnicoPerfil.FotoUrl,
+                Disponivel = perfil.TecnicoPerfil.Disponivel,
 
-                Especialidades = await _context.TecnicoEspecialidades
-                                                .Include(es => es.Especialidade)
-                                                .Where(e => e.TecnicoPerfilId == idTecnico)
-                                                .Select(es => es.Especialidade.Nome)
-                                                .ToListAsync()
+                EspecialidadesSelecionadas = await _context
+                    .TecnicoEspecialidades
+                    .Where(e => e.TecnicoPerfilId == idTecnico)
+                    .Select(e => e.EspecialidadeId)
+                    .ToListAsync(),
+
+                TodasEspecialidades = await _context
+                    .Especialidades
+                    .OrderBy(e => e.Nome)
+                    .ToListAsync()
             };
 
-            return View(viewModel);
+            return View(vm);
         }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> AtualizarFoto(IFormFile NovaFoto)
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var perfil = await _context.TecnicoPerfis
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+            if (perfil == null)
+                return NotFound();
+
+            if (NovaFoto != null)
+            {
+                string pastaUploads =
+                    Path.Combine(_environment.WebRootPath, "fotos_perfil");
+
+                Directory.CreateDirectory(pastaUploads);
+
+                string nomeArquivo =
+                    Guid.NewGuid() + "_" + NovaFoto.FileName;
+
+                string caminho =
+                    Path.Combine(pastaUploads, nomeArquivo);
+
+                using var stream =
+                    new FileStream(caminho, FileMode.Create);
+
+                await NovaFoto.CopyToAsync(stream);
+
+                perfil.FotoUrl = nomeArquivo;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Perfil));
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoverFoto()
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var perfil = await _context.TecnicoPerfis
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+            if (perfil == null)
+                return NotFound();
+
+            perfil.FotoUrl = null;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Perfil));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarDados(
+    PerfilTecnicoViewModel model)
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var perfil = await _context.TecnicoPerfis
+                .Include(t => t.Usuario)
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+            if (perfil == null)
+                return NotFound();
+
+            perfil.Usuario.Nome = model.Nome;
+            perfil.Usuario.Email = model.Email;
+            perfil.Descricao = model.Bio;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Perfil));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarEspecialidades(
+    List<int> EspecialidadesSelecionadas)
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var atuais = await _context.TecnicoEspecialidades
+                .Where(x => x.TecnicoPerfilId == idTecnico)
+                .ToListAsync();
+
+            _context.TecnicoEspecialidades.RemoveRange(atuais);
+
+            foreach (var idEspecialidade in EspecialidadesSelecionadas)
+            {
+                _context.TecnicoEspecialidades.Add(
+                    new TecnicoEspecialidade
+                    {
+                        TecnicoPerfilId = idTecnico,
+                        EspecialidadeId = idEspecialidade
+                    });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Perfil));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AlterarDisponibilidade()
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var perfil = await _context.TecnicoPerfis
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+            if (perfil == null)
+                return NotFound();
+
+            perfil.Disponivel = !perfil.Disponivel;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Perfil));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarSenha(
+    string SenhaAtual,
+    string NovaSenha,
+    string ConfirmarSenha)
+        {
+            var usuLogado = TempData["Tecnico"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Tecnico");
+
+            int idTecnico = (int)usuLogado;
+
+            var perfil = await _context.TecnicoPerfis
+                .Include(t => t.Usuario)
+                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+
+            if (perfil == null)
+                return NotFound();
+
+            if (!BCrypt.Net.BCrypt.Verify(
+                SenhaAtual,
+                perfil.Usuario.Senha))
+            {
+                return RedirectToAction(nameof(Perfil));
+            }
+
+            if (NovaSenha != ConfirmarSenha)
+            {
+                return RedirectToAction(nameof(Perfil));
+            }
+
+            perfil.Usuario.Senha =
+                BCrypt.Net.BCrypt.HashPassword(NovaSenha);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Perfil));
+        }
+
+
 
         [HttpGet]
         public IActionResult Ajuda()

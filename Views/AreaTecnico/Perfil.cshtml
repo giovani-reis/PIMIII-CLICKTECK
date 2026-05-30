@@ -84,7 +84,7 @@
 
                 <div class="sidebar-user-info">
 
-                    <img src="@Model.FotoPerfil"
+                    <img src="~/fotos_perfil/@(@Model.FotoPerfil ?? "default-avatar.jpg")"
                          alt="Foto de Perfil"
                          id="sidebar-img"
                          class="sidebar-avatar" />
@@ -158,13 +158,48 @@
 
                     <div class="avatar-upload-section">
 
-                        <img src="@Model.FotoPerfil"
+                        <img src="~/fotos_perfil/@(@Model.FotoPerfil ?? "default-avatar.jpg")"
                              alt="Sua Foto"
                              id="main-avatar"
                              class="current-avatar" />
 
-                    </div>
+                        <div class="avatar-actions">
 
+                            <form method="post"
+                                  enctype="multipart/form-data"
+                                  action="@Url.Action("AtualizarFoto", "AreaTecnico")">
+
+                                <input type="file"
+                                       name="NovaFoto"
+                                       class="form-input"
+                                       required />
+
+                                <br />
+
+                                <button type="submit"
+                                        class="btn-outline">
+
+                                    Trocar Foto
+
+                                </button>
+
+                            </form>
+
+                            <form method="post"
+                                  action="@Url.Action("RemoverFoto", "AreaTecnico")">
+
+                                <button type="submit"
+                                        class="btn-text-danger">
+
+                                    Remover Foto
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
                     <hr class="divider" />
 
                     <form method="post"
@@ -233,6 +268,19 @@
                         </div>
 
                     </form>
+                    <form method="post"
+                          action="@Url.Action("AlterarDisponibilidade","AreaTecnico")">
+
+                        <button type="submit"
+                                class="btn-outline">
+
+                            @(Model.Disponivel
+                                                        ? "Tornar Indisponível"
+                                                        : "Tornar Disponível")
+
+                        </button>
+
+                    </form>
 
                 </div>
 
@@ -253,24 +301,30 @@
                     </header>
 
                     <form method="post"
-                          action="@Url.Action("AtualizarEspecialidades", "AreaTecnico")"
+                          action="@Url.Action("AtualizarEspecialidades","AreaTecnico")"
                           class="profile-form">
 
-                        <div class="form-row">
+                        <div class="form-group">
 
-                            <div class="form-group">
+                            <label>
+                                Especialidades
+                            </label>
 
-                                <label>
-                                    Especialidades
-                                </label>
+                            <div class="tech-skills">
 
-                                <textarea name="EspecialidadesTexto"
-                                          rows="5"
-                                          class="form-input">@string.Join(", ", Model.Especialidades)</textarea>
+                                @foreach (var especialidade in Model.TodasEspecialidades)
+                                {
+                                    <label style="display:block; margin-bottom:10px;">
 
-                                <span class="help-text">
-                                    Separe por vírgula.
-                                </span>
+                                        <input type="checkbox"
+                                               name="EspecialidadesSelecionadas"
+                                               value="@especialidade.Id"
+                                               @(Model.EspecialidadesSelecionadas.Contains(especialidade.Id) ? "checked" : "") />
+
+                                        @especialidade.Nome
+
+                                    </label>
+                                }
 
                             </div>
 
@@ -281,7 +335,7 @@
                             <button type="submit"
                                     class="btn-primary">
 
-                                Atualizar Perfil
+                                Salvar Especialidades
 
                             </button>
 

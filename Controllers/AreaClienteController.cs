@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using PIM_TechTrust.Models;
 using PIM_TechTrust.Models.Enums;
 using PIMIII_CLICKTECK.Data;
@@ -205,6 +206,113 @@ namespace PIMIII_CLICKTECK.Controllers
             }
 
             return RedirectToAction("MeusAgendamentos");
+        }
+
+        /*
+         #####################
+         */
+
+        [HttpGet]
+        public async Task<IActionResult> Perfil()
+        {
+            var usuLogado = TempData["Usu"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Usu");
+
+            int idUsu = (int)usuLogado;
+
+            var perfil = await _context.Usuarios
+                .FirstOrDefaultAsync(t => t.Id == idUsu);
+
+            if (perfil == null)
+                return NotFound();
+
+            var vm = new Usuario
+            {
+                Nome = perfil.Nome,
+                Email = perfil.Email
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarDados(
+            Usuario model)
+        {
+            var usuLogado = TempData["Usu"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Usu");
+
+            int idUsu = (int)usuLogado;
+
+            var perfil = await _context.Usuarios
+                .FirstOrDefaultAsync(t => t.Id == idUsu);
+
+            if (perfil == null)
+                return NotFound();
+
+            perfil.Nome = model.Nome;
+            perfil.Email = model.Email;
+
+
+            await _context.SaveChangesAsync();
+
+            TempData["Sucesso"] = "Dados atualizados com sucesso!";
+            return RedirectToAction(nameof(Perfil));
+        }
+
+        
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarSenha(
+                                            string SenhaAtual,
+                                            string NovaSenha,
+                                            string ConfirmarSenha)
+        {
+            var usuLogado = TempData["Usu"];
+
+            if (usuLogado == null)
+                return RedirectToAction("Index", "Login");
+
+            TempData.Keep("Usu");
+
+            int idUsu = (int)usuLogado;
+
+
+            var perfil = await _context.Usuarios
+                .FirstOrDefaultAsync(t => t.Id == idUsu);
+
+            if (perfil == null)
+                return NotFound();
+
+            if (!BCrypt.Net.BCrypt.Verify(
+                SenhaAtual,
+                perfil.Senha))
+            {
+                TempData["Erro"] = "Senha incorreta!";
+                return RedirectToAction(nameof(Perfil));
+            }
+
+            if (NovaSenha != ConfirmarSenha)
+            {
+                TempData["Erro"] = "As senhas não coincidem";
+                return RedirectToAction(nameof(Perfil));
+            }
+
+            perfil.Senha =
+                BCrypt.Net.BCrypt.HashPassword(NovaSenha);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Sucesso"] = "Senha atualizada com sucesso!";
+            return RedirectToAction(nameof(Perfil));
         }
 
         [HttpGet]

@@ -13,12 +13,88 @@
           content="width=device-width, initial-scale=1.0" />
 
     <title>ClickTech | Perfil do Técnico</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet" />
 
     <link rel="stylesheet"
           href="~/estilos/perfil-tecnico.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+          <style>
+        .toggle-btn {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+            .toggle-btn.ativo {
+                background: #22c55e;
+                color: white;
+            }
+
+            .toggle-btn.inativo {
+                background: #ef4444;
+                color: white;
+            }
+
+            .toggle-btn:hover {
+                opacity: .9;
+            }
+
+        .tech-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .especialidades-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        .especialidade-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+            .especialidade-item:hover {
+                transform: translateY(-2px);
+                border-color: #2563eb !important;
+            }
+
+            .especialidade-item input[type="checkbox"] {
+                cursor: pointer;
+            }
+
+            .especialidade-item label {
+                cursor: pointer;
+                margin: 0;
+                font-weight: 500;
+            }
+
+        .especialidades-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .especialidades-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .especialidades-container::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 20px;
+        }
+
+            .especialidades-container::-webkit-scrollbar-thumb:hover {
+                background: #64748b;
+            }
+          </style>
 </head>
 
 <body class="dashboard-body">
@@ -255,7 +331,32 @@
                             </div>
 
                         </div>
+                        <div class="form-row">
 
+                            <div class="form-group">
+
+                                <label>
+                                    Disponibilidade
+                                </label>
+
+                                <input type="hidden"
+                                       id="Disponivel"
+                                       name="Disponivel"
+                                       value="@Model.Disponivel.ToString().ToLower()" />
+
+                                <button type="button"
+                                        id="btnDisponibilidade"
+                                        class="toggle-btn @(Model.Disponivel ? "ativo" : "inativo")">
+
+                                    @(Model.Disponivel
+                                                                        ? "🟢 Disponível"
+                                                                        : "🔴 Indisponível")
+
+                                </button>
+
+                            </div>
+
+                        </div>
                         <div class="form-actions">
 
                             <button type="submit"
@@ -266,19 +367,6 @@
                             </button>
 
                         </div>
-
-                    </form>
-                    <form method="post"
-                          action="@Url.Action("AlterarDisponibilidade","AreaTecnico")">
-
-                        <button type="submit"
-                                class="btn-outline">
-
-                            @(Model.Disponivel
-                                                        ? "Tornar Indisponível"
-                                                        : "Tornar Disponível")
-
-                        </button>
 
                     </form>
 
@@ -310,21 +398,49 @@
                                 Especialidades
                             </label>
 
-                            <div class="tech-skills">
+                            <div class="col-12">
 
-                                @foreach (var especialidade in Model.TodasEspecialidades)
-                                {
-                                    <label style="display:block; margin-bottom:10px;">
+                                <label class="form-label fw-bold mb-2">
+                                    Selecione suas especialidades
+                                </label>
 
-                                        <input type="checkbox"
-                                               name="EspecialidadesSelecionadas"
-                                               value="@especialidade.Id"
-                                               @(Model.EspecialidadesSelecionadas.Contains(especialidade.Id) ? "checked" : "") />
+                                <div class="especialidades-container p-3 border rounded bg-light"
+                                     style="max-height: 350px; overflow-y: auto;">
 
-                                        @especialidade.Nome
+                                    <div class="row g-2">
 
-                                    </label>
-                                }
+                                        @foreach (var especialidade in Model.TodasEspecialidades)
+                                        {
+                                            <div class="col-md-6">
+
+                                                <div class="especialidade-item bg-white border rounded px-3 py-2 shadow-sm d-flex align-items-center">
+
+                                                    <input class="form-check-input me-2"
+                                                           type="checkbox"
+                                                           name="EspecialidadesSelecionadas"
+                                                           value="@especialidade.Id"
+                                                           id="esp-@especialidade.Id"
+                                                           @(Model.EspecialidadesSelecionadas.Contains(especialidade.Id) ? "checked" : "") />
+
+                                                    <label class="form-check-label flex-grow-1"
+                                                           for="esp-@especialidade.Id">
+
+                                                        @especialidade.Nome
+
+                                                    </label>
+
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Marque todas as especialidades que você atende.
+                                </small>
 
                             </div>
 
@@ -433,6 +549,38 @@
 
     </main>
 
+    @if (TempData["Sucesso"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso',
+                text: '@TempData["Sucesso"]',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    }
+    @if (TempData["Erro"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: '@TempData["Erro"]',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    }
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
     <script>
 
         const tabs = document.querySelectorAll(".nav-tab");
@@ -444,13 +592,8 @@
 
                 e.preventDefault();
 
-                tabs.forEach(t => {
-                    t.classList.remove("active");
-                });
-
-                panes.forEach(p => {
-                    p.classList.remove("active");
-                });
+                tabs.forEach(t => t.classList.remove("active"));
+                panes.forEach(p => p.classList.remove("active"));
 
                 this.classList.add("active");
 
@@ -464,8 +607,78 @@
 
         });
 
-    </script>
+        const formSenha = document.querySelector(
+            'form[action*="AtualizarSenha"]'
+        );
 
+        if (formSenha) {
+
+            formSenha.addEventListener("submit", function (e) {
+
+                const novaSenha =
+                    document.querySelector(
+                        'input[name="NovaSenha"]'
+                    ).value;
+
+                const confirmarSenha =
+                    document.querySelector(
+                        'input[name="ConfirmarSenha"]'
+                    ).value;
+
+                if (novaSenha !== confirmarSenha) {
+
+                    e.preventDefault();
+
+                    alert("A confirmação da senha não corresponde à nova senha.");
+
+                }
+
+            });
+
+        }
+
+        const btnDisponibilidade =
+            document.getElementById("btnDisponibilidade");
+
+        const inputDisponivel =
+            document.getElementById("Disponivel");
+
+        if (btnDisponibilidade) {
+
+            btnDisponibilidade.addEventListener("click", () => {
+
+                const disponivel =
+                    inputDisponivel.value === "true";
+
+                if (disponivel) {
+
+                    inputDisponivel.value = "false";
+
+                    btnDisponibilidade.classList.remove("ativo");
+                    btnDisponibilidade.classList.add("inativo");
+
+                    btnDisponibilidade.innerHTML =
+                        "🔴 Indisponível";
+
+                }
+                else {
+
+                    inputDisponivel.value = "true";
+
+                    btnDisponibilidade.classList.remove("inativo");
+                    btnDisponibilidade.classList.add("ativo");
+
+                    btnDisponibilidade.innerHTML =
+                        "🟢 Disponível";
+
+                }
+
+            });
+
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -225,7 +225,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
                 EspecialidadesSelecionadas = await _context
                     .TecnicoEspecialidades
-                    .Where(e => e.TecnicoPerfilId == idTecnico)
+                    .Where(e => e.TecnicoPerfilId == perfil.TecnicoPerfil.Id)
                     .Select(e => e.EspecialidadeId)
                     .ToListAsync(),
 
@@ -252,7 +252,7 @@ namespace PIMIII_CLICKTECK.Controllers
             int idTecnico = (int)usuLogado;
 
             var perfil = await _context.TecnicoPerfis
-                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+                .FirstOrDefaultAsync(t => t.UsuarioId == idTecnico);
 
             if (perfil == null)
                 return NotFound();
@@ -280,8 +280,10 @@ namespace PIMIII_CLICKTECK.Controllers
                 await _context.SaveChangesAsync();
             }
 
+            TempData["Sucesso"] = "Foto atualizada   com sucesso!";
             return RedirectToAction(nameof(Perfil));
         }
+
         [HttpPost]
         public async Task<IActionResult> RemoverFoto()
         {
@@ -295,7 +297,7 @@ namespace PIMIII_CLICKTECK.Controllers
             int idTecnico = (int)usuLogado;
 
             var perfil = await _context.TecnicoPerfis
-                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+                .FirstOrDefaultAsync(t => t.UsuarioId == idTecnico);
 
             if (perfil == null)
                 return NotFound();
@@ -304,13 +306,14 @@ namespace PIMIII_CLICKTECK.Controllers
 
             await _context.SaveChangesAsync();
 
+            TempData["Sucesso"] = "Foto removida com sucesso!";
             return RedirectToAction(nameof(Perfil));
         }
 
         [HttpPost]
         public async Task<IActionResult> AtualizarDados(
     PerfilTecnicoViewModel model)
-        {
+       {
             var usuLogado = TempData["Tecnico"];
 
             if (usuLogado == null)
@@ -322,7 +325,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
             var perfil = await _context.TecnicoPerfis
                 .Include(t => t.Usuario)
-                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+                .FirstOrDefaultAsync(t => t.UsuarioId == idTecnico);
 
             if (perfil == null)
                 return NotFound();
@@ -330,9 +333,12 @@ namespace PIMIII_CLICKTECK.Controllers
             perfil.Usuario.Nome = model.Nome;
             perfil.Usuario.Email = model.Email;
             perfil.Descricao = model.Bio;
+            perfil.Disponivel = model.Disponivel;
+
 
             await _context.SaveChangesAsync();
 
+            TempData["Sucesso"] = "Dados atualizados com sucesso!";
             return RedirectToAction(nameof(Perfil));
         }
 
@@ -349,8 +355,13 @@ namespace PIMIII_CLICKTECK.Controllers
 
             int idTecnico = (int)usuLogado;
 
+            var tecnicoPerfilId = await _context.TecnicoPerfis
+                                        .Where(tp => tp.UsuarioId == idTecnico)
+                                        .Select(tp => tp.Id)
+                                        .FirstAsync();
+
             var atuais = await _context.TecnicoEspecialidades
-                .Where(x => x.TecnicoPerfilId == idTecnico)
+                .Where(x => x.TecnicoPerfilId == tecnicoPerfilId)
                 .ToListAsync();
 
             _context.TecnicoEspecialidades.RemoveRange(atuais);
@@ -360,13 +371,14 @@ namespace PIMIII_CLICKTECK.Controllers
                 _context.TecnicoEspecialidades.Add(
                     new TecnicoEspecialidade
                     {
-                        TecnicoPerfilId = idTecnico,
+                        TecnicoPerfilId = tecnicoPerfilId,
                         EspecialidadeId = idEspecialidade
                     });
             }
 
             await _context.SaveChangesAsync();
 
+            TempData["Sucesso"] = "Especialidades atualizadas com sucesso!";
             return RedirectToAction(nameof(Perfil));
         }
         [HttpPost]
@@ -382,7 +394,7 @@ namespace PIMIII_CLICKTECK.Controllers
             int idTecnico = (int)usuLogado;
 
             var perfil = await _context.TecnicoPerfis
-                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+                .FirstOrDefaultAsync(t => t.UsuarioId == idTecnico);
 
             if (perfil == null)
                 return NotFound();
@@ -396,9 +408,9 @@ namespace PIMIII_CLICKTECK.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AtualizarSenha(
-    string SenhaAtual,
-    string NovaSenha,
-    string ConfirmarSenha)
+                                            string SenhaAtual,
+                                            string NovaSenha,
+                                            string ConfirmarSenha)
         {
             var usuLogado = TempData["Tecnico"];
 
@@ -411,7 +423,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
             var perfil = await _context.TecnicoPerfis
                 .Include(t => t.Usuario)
-                .FirstOrDefaultAsync(t => t.Id == idTecnico);
+                .FirstOrDefaultAsync(t => t.UsuarioId == idTecnico);
 
             if (perfil == null)
                 return NotFound();
@@ -420,11 +432,13 @@ namespace PIMIII_CLICKTECK.Controllers
                 SenhaAtual,
                 perfil.Usuario.Senha))
             {
+                TempData["Erro"] = "Senha incorreta!";
                 return RedirectToAction(nameof(Perfil));
             }
 
             if (NovaSenha != ConfirmarSenha)
             {
+                TempData["Erro"] = "As senhas não coincidem";
                 return RedirectToAction(nameof(Perfil));
             }
 
@@ -433,6 +447,7 @@ namespace PIMIII_CLICKTECK.Controllers
 
             await _context.SaveChangesAsync();
 
+            TempData["Sucesso"] = "Senha atualizada com sucesso!";
             return RedirectToAction(nameof(Perfil));
         }
 

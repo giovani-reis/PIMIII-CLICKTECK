@@ -48,6 +48,37 @@
                 background-color: #f8f9fa;
                 border-color: #0d6efd;
             }
+
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: var(--white);
+            color: var(--text-main);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+            .btn-voltar:hover {
+                border-color: var(--primary-blue);
+                color: var(--primary-blue);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(14, 165, 233, 0.1);
+            }
+
+            .btn-voltar svg {
+                transition: transform 0.2s ease;
+            }
+
+            .btn-voltar:hover svg {
+                transform: translateX(-3px);
+            }
     </style>
 </head>
 <body class="auth-body">
@@ -64,8 +95,23 @@
         </div>
 
         <div class="auth-form-section">
-            <a asp-action="Cadastro" asp-controller="Cadastro" class="back-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <a href="@Url.Action("Cadastro", "Cadastro")"
+               class="btn-voltar back-link">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="18"
+                     height="18"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+
                 Voltar
             </a>
 
